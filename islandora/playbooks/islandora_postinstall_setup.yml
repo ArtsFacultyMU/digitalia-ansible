@@ -1,0 +1,14 @@
+---
+- name: Set up various scripts fo Islandora servers
+  hosts: islandora
+
+  roles:
+    - islandora_scripts
+
+  tasks:
+    - name: Remove islandora user privileges
+      ansible.builtin.user:
+        name: islandora
+        password: "!"
+        groups: islandora
+

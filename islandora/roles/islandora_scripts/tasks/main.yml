@@ -1,0 +1,50 @@
+---
+- name: Create bin dir
+  ansible.builtin.file:
+    path: "{{ root_bin_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Check bin dir
+  ansible.builtin.stat:
+    path: "{{ root_bin_dir }}"
+  register: root_bin_dir_res
+ 
+- name: Create bin logs
+  ansible.builtin.file:
+    path: "{{ root_logs_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Check logs dir
+  ansible.builtin.stat:
+    path: "{{ root_logs_dir }}"
+  register: root_logs_dir_res
+ 
+- name: Copy watch script
+  ansible.builtin.template:
+    src: watch.sh
+    dest: "{{ root_bin_dir}}/watch.sh"
+    owner: root
+    group: root
+    mode: u=rwx,g=r,o=r
+  register: copy_watch_script_res
+  when: 
+    - root_bin_dir_res.stat.exists 
+    - root_bin_dir_res.stat.isdir 
+    - root_logs_dir_res.stat.exists
+    - root_logs_dir_res.stat.isdir
+
+- name: Update cron to run watch.sh script
+  ansible.builtin.cron:
+    minute: "*/5"
+    user: root
+    name: "service_watch"
+    job: "/root/bin/watch.sh"
+  when: copy_watch_script_res and production is defined
+
+

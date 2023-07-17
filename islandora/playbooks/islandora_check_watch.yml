@@ -1,0 +1,11 @@
+---
+- name: Islandora check watch.sh
+  hosts: islandora
+
+  tasks:
+    - name: Check if watch.sh presented in crontab
+      ansible.builtin.shell:
+        cmd: crontab -l | grep watch.sh
+      register: watch_present
+      when: production is defined 
+

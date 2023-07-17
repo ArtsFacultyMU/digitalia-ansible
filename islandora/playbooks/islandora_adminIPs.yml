@@ -1,0 +1,6 @@
+---
+- name: Set up admin IP for Apache for Islandora servers
+  hosts: phil_islandora
+
+  roles:
+    - apache
