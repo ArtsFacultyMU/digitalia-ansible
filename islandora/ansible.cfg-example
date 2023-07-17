@@ -1,0 +1,5 @@
+[defaults]
+forks = 30
+inventory = islandora/inventory
+roles_path = roles/
+collections_paths = collections/
