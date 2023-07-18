@@ -1,0 +1,26 @@
+---
+- name: "Check if Apache is installed"
+  ansible.builtin.package_facts:
+    manager: "auto"
+
+- name: Copy admin IPs 
+  ansible.builtin.template:
+    src: adminIPs.conf.j2
+    dest: /etc/apache2/adminIPs.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: 
+    - inventory_hostname in groups["phil_islandora"]
+    - production is defined
+    - "'apache2' in ansible_facts.packages"
+  notify:
+    - Reload apache
+
+- name: Disable status module
+  ansible.builtin.command:
+    cmd: a2dismod status
+  when:
+    - "'apache2' in ansible_facts.packages"
+  notify:
+    - Restart apache
