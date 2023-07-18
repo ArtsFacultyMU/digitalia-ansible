@@ -1,0 +1,15 @@
+---
+islandora_developers:
+  - name: adler
+    github_name: xadler1
+    github_email: 469190@mail.muni.cz
+  - name: krejcir
+    github_name: krejcir
+    github_email: krejcir@ics.muni.cz
+      #  - name: strakosova
+      #github_name:
+      #github_email:
+
+github_ssh_keys_dir: /home/islandora/github_keys
+
+

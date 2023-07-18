@@ -1,0 +1,11 @@
+---
+
+- name: Update MySQL privs for drupal8 user playbook
+  hosts: islandora
+
+  tasks:
+    - name: Grant reload and process privs on drupal8
+      ansible.builtin.shell:
+        cmd: mysql -e "GRANT RELOAD,PROCESS ON *.* TO 'drupal8'@'%'; FLUSH PRIVILEGES;"
+      register: cmd_result 
+      timeout: 60

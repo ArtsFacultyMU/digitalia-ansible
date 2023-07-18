@@ -1,0 +1,17 @@
+---
+- name: Islandora copy backup clean up script
+  ansible.builtin.template:
+    src: backup_cleanup.sh.j2
+    dest: /root/bin/backup_cleanup.sh
+    mode: "u+rwx"
+  when: inventory_hostname in groups["islandora"] 
+
+- name: Islandora set up backup cron job
+  ansible.builtin.cron:
+    minute: 0
+    hour: 4
+    user: root
+    name: "islandora_backup_cleanup"
+    job: "/root/bin/backup_cleanup.sh"
+  when: inventory_hostname in groups["islandora"]
+
