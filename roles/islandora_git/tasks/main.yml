@@ -33,3 +33,23 @@
   loop: '{{ islandora_developers }}'
   become: yes
   become_user: islandora
+
+- name: Set up git pull aliases
+  community.general.git_config:
+    name: 'alias.pull-{{ item.name }}'
+    scope: global
+    value: '-c core.sshCommand="ssh -i {{ github_ssh_keys_dir }}/key.{{ item.name }}" pull'
+  loop: '{{ islandora_developers }}'
+  become: yes
+  become_user: islandora
+
+- name: Set up git clone aliases
+  community.general.git_config:
+    name: 'alias.clone-{{ item.name }}'
+    scope: global
+    value: '-c core.sshCommand="ssh -i {{ github_ssh_keys_dir }}/key.{{ item.name }}" clone'
+  loop: '{{ islandora_developers }}'
+  become: yes
+  become_user: islandora
+
+
