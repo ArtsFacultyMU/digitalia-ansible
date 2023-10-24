@@ -1,0 +1,33 @@
+---
+- name: Islandora preinstallation set up
+  # this playbook should be run on server _before_ installing Islandora via official playbook
+  hosts: islandora
+  remote_user: root
+
+  tasks:
+    - name: Create islandora group
+      ansible.builtin.group:
+        name: islandora
+        state: present
+
+    - name: Create islandora user
+      ansible.builtin.user:
+        name: islandora
+        password: "{{ islandora_password | password_hash('sha512', 'mysecretsalt') }}"
+        groups: islandora,sudo
+        shell: "/bin/bash"
+        state: present
+
+
+    # needs collection ansible.posix
+    # install via ansible-galaxy collection install ansible.posix
+    # see https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html
+    - name: Copy ssh key
+      ansible.posix.authorized_key:
+        user: islandora
+        state: present
+        exclusive: true
+          #        key: "{{ lookup('file', '/home/krejvl/.ssh/id_rsa.pub') }}"
+        key: '{{ item }}'
+      with_file:
+        - "{{ ansible_ssh_private_key_file }}.pub"
