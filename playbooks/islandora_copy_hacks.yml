@@ -1,0 +1,6 @@
+---
+- name: Islandora copy hack files
+  hosts: islandora
+
+  roles:
+    - islandora_copy_hacks 

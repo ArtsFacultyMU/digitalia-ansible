@@ -1,0 +1,6 @@
+---
+islandora_drupal_root: "/var/www/html/drupal"
+islandora_user: "islandora"
+islandora_group: "islandora"
+islandora_hacks_mode: "644"
+
