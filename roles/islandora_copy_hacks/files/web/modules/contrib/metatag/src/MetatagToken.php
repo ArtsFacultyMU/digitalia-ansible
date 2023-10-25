@@ -69,7 +69,7 @@ class MetatagToken {
     // values.
     $replaced = preg_replace('/(?<!:)(?<!)\/+\//', '/', $replaced);
     
-    // begin: islandora-muni_:
+    // begin: islandora-muni:
     // comma hack for the authors
     if (str_contains($string, 'field_author')) {
 	$toreplaces = explode('^', $replaced);

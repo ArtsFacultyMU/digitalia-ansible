@@ -1,14 +1,16 @@
 ---
 - name: Islandora copy OAI hacks
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "{{ islandora_drupal_root }}"
+    src: "{{ item.path }}/{{ item.file }}"
+    dest: "{{ islandora_drupal_root }}/{{ item.path }}//{{ item. file }}"
     mode: "{{ islandora_hacks_mode }}"
     owner: "{{ islandora_user }}"
     group: "{{ islandora_group }}"
   loop: 
-    - web/modules/contrib/metatag/src/MetatagToken.php 
-    - web/modules/contrib/metatag/src/Plugin/metatag/Tag/MetaNameBase.php
+    - path: "web/modules/contrib/metatag/src"
+      file: "MetatagToken.php" 
+    - path: "web/modules/contrib/metatag/src/Plugin/metatag/Tag"
+      file: "MetaNameBase.php"
   tags: oai_hacks
 
     #- name: Debug test
