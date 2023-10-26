@@ -4,7 +4,7 @@
 do 
 	day=`stat -c '%y' "$file" | sed 's/....-..-\(..\).*/\1/'`
 
-	if [ "$day" != "01" -a "$day" != "14" ];
+	if [ "$day" != "01" -a "$day" != "08" -a "$day" != "16" -a "$day" != "24" ];
 	then 
 		rm -f "$file"
 	fi
