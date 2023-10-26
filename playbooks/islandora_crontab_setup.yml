@@ -1,0 +1,6 @@
+---
+- name: Islandora crontab set up
+  hosts: islandora
+
+  roles:
+    - islandora_crontab 
