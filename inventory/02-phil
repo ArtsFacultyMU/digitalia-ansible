@@ -15,6 +15,7 @@ digilib.phil.muni.cz production="y" backup="y"
 
 [phil_debian]
 handle.phil.muni.cz
+datarepo.phil.muni.cz production="y"
 
 [phil_islandora:children]
 phil_ubuntu
