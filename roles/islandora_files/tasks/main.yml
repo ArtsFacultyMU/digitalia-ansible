@@ -1,0 +1,11 @@
+---
+- name: Copy .vimrc to user's home directory
+  ansible.builtin.copy:
+    src: .vimrc 
+    dest: "/home/{{ username }}/.vimrc"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0644'
+  become: yes
+  become_user: islandora
+
