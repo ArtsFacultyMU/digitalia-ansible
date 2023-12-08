@@ -6,9 +6,9 @@ islandora_developers:
   - name: krejcir
     github_name: krejcir
     github_email: krejcir@ics.muni.cz
-      #  - name: strakosova
-      #github_name:
-      #github_email:
+  - name: strakosova
+    github_name: bstrakosova
+    github_email: strakosova@phil.muni.cz
 
 github_ssh_keys_dir: /home/islandora/github_keys
 
