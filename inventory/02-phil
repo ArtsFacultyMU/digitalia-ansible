@@ -1,5 +1,5 @@
 [phil_ubuntu]
-artefact-phil.muni.cz 
+artefact-devel.phil.muni.cz 
 cinematicbrno.phil.muni.cz production="y" backup="y"
 dan-demo.phil.muni.cz production="y" backup="y" # arnenovak.phil.muni.cz
 dan-devel.phil.muni.cz
