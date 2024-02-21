@@ -16,6 +16,7 @@
         password: "{{ islandora_password | password_hash('sha512', 'mysecretsalt') }}"
         groups: islandora,sudo
         shell: "/bin/bash"
+        create_home: yes
         state: present
 
 
