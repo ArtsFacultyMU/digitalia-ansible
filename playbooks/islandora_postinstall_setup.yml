@@ -11,5 +11,4 @@
       ansible.builtin.user:
         name: islandora
         password: "!"
-        groups: islandora
-
+        groups: islandora,www-data
