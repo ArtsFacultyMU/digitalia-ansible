@@ -5,6 +5,7 @@
   roles:
     - islandora_scripts
     - islandora_files
+    - islandora_github_setup
 
   tasks:
     - name: Remove islandora user privileges
