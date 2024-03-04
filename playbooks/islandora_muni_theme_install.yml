@@ -1,0 +1,41 @@
+---
+- name: Islandora general "muni_theme" install and update in Drupal
+  # playbook for install and update main part of muni_theme
+  # and set up plaform specific dir from template
+  hosts: islandora
+  vars: 
+    drupal_dir: /var/www/html/drupal
+    composer_bin: /usr/local/bin/composer
+    drush_bin: /var/www/html/drupal/vendor/bin/drush
+    theme_dir: "{{ drupal_dir }}/web/themes/islandora_muni"
+  remote_user: root
+  become: yes
+  become_user: islandora
+
+  tasks:
+    - name: Install 'bartik' basic theme
+      community.general.composer:
+        command: require
+        arguments: 'drupal/bartik'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+
+    - name: Create 'platform_specific' dir
+      ansible.builtin.file:
+        state: directory
+        path: "{{ theme_dir }}/platform_specific"
+
+    - name: Create dirs inside 'platform_specific'
+      ansible.builtin.file:
+        state: directory
+        path: "{{ theme_dir }}/platform_specific/{{ item }}"
+      loop:
+        - css
+        - images
+        - templates
+
+    - name: Create css style file
+      ansible.builtin.file:
+        state: touch
+        path: "{{ theme_dir }}/platform_specific/css/style.css"
+
