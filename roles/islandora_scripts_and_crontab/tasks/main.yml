@@ -1,0 +1,163 @@
+---
+- name: Create bin dir
+  ansible.builtin.file:
+    path: "{{ root_bin_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+  tag: scripts
+
+- name: Check bin dir
+  ansible.builtin.stat:
+    path: "{{ root_bin_dir }}"
+  register: root_bin_dir_res
+  tag: scripts
+
+- name: Create bin logs
+  ansible.builtin.file:
+    path: "{{ root_logs_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+  tag: scripts
+
+- name: Check logs dir
+  ansible.builtin.stat:
+    path: "{{ root_logs_dir }}"
+  register: root_logs_dir_res
+  tag: scripts
+
+- name: Copy watch script
+  ansible.builtin.template:
+    src: watch.sh.j2
+    dest: "{{ root_bin_dir}}/watch.sh"
+    owner: root
+    group: root
+    mode: u=rwx,g=r,o=r
+  register: copy_watch_script_res
+  when: 
+    - root_bin_dir_res.stat.exists 
+    - root_bin_dir_res.stat.isdir 
+    - root_logs_dir_res.stat.exists
+    - root_logs_dir_res.stat.isdir
+  tag: scripts
+
+- name: Update cron to run watch.sh script
+  ansible.builtin.cron:
+    minute: "*/5"
+    user: root
+    name: "islandora_service_watch"
+    job: "{{ root_bin_dir }}/watch.sh"
+  when: copy_watch_script_res and production is defined
+  tag: crontab
+
+- name: Copy root bin scripts
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ root_bin_dir}}/{{ item }}"
+    owner: root
+    group: root
+    mode: u=rwx,g=r,o=r
+  when: 
+    - root_bin_dir_res.stat.exists 
+    - root_bin_dir_res.stat.isdir 
+  loop:
+    - bacula_backup_report.sh
+    - islandora_backup_cleanup.sh
+    - islandora_backup.sh
+  tag: scripts
+
+- name: Islandora set up backup cron job
+  ansible.builtin.cron:
+    minute: 0
+    hour: 1
+    user: root
+    name: "islandora_backup"
+    job: "{{ root_bin_dir}}/islandora_backup.sh"
+  tag: crontab
+
+- name: Islandora set up backup cron job
+  ansible.builtin.cron:
+    minute: 0
+    hour: 4
+    user: root
+    name: "islandora_backup_cleanup"
+    job: "{{ root_bin_dir}}/islandora_backup_cleanup.sh"
+  tag: crontab
+
+
+
+- name: Set up islandora:islandora for drupal dir
+  ansible.builtin.file:
+    path: /var/www/html/
+    state: directory
+    recurse: yes
+    owner: islandora
+    group: islandora
+    mode: "o-w"
+
+- name: Set up www-data group for files dir
+  ansible.builtin.file:
+    path: /var/www/html/drupal/web/sites/default/files
+    state: directory
+    recurse: yes
+    group: www-data
+    mode: "g+w"
+
+- name: Copy islandora twpol.txt 
+  ansible.builtin.template:
+    src: twpol.txt
+    dest: /etc/tripwire/twpol.txt
+  register: twpol_res
+
+
+- name: Create islandora bin dir
+  ansible.builtin.file:
+    path: "{{ islandora_bin_dir }}"
+    state: directory
+    owner: islandora
+    group: islandora
+    mode: "0700"
+  tag: scripts
+
+- name: Check islandora bin dir
+  ansible.builtin.stat:
+    path: "{{ islandora_bin_dir }}"
+  register: islandora_bin_dir_res
+  tag: scripts
+
+- name: Copy islandora bin scripts
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "{{ islandora_bin_dir}}/{{ item }}"
+    owner: islandora
+    group: islandora
+    mode: u=rwx,g=r,o=r
+  when: 
+    - islandora_bin_dir_res.stat.exists 
+    - islandora_bin_dir_res.stat.isdir 
+  loop: 
+    - islandora_security_checks.sh
+    - islandora_drupal_security_setup.sh
+    - islandora_security_update.sh
+  tag: scripts
+
+- name: Check islandora_security_checks.sh script
+  ansible.builtin.stat:
+    path: "{{ islandora_bin_dir }}/islandora-security-checks"
+  register: islandora_security_checks_script_res
+  tag: scripts
+ 
+- name: Update cron to run islandora_security_checks.sh script
+  ansible.builtin.cron:
+    minute: "0"
+    hour: "2"
+    user: islandora
+    name: "security_checks"
+    job: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
+  when: islandora_security_checks_script_res
+  tag: scripts
+
+

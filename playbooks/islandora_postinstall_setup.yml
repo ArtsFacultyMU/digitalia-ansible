@@ -3,8 +3,8 @@
   hosts: islandora
 
   roles:
-    - islandora_scripts
-    - islandora_files
+    - islandora_scripts_and_crontab
+    - islandora_environment
     - islandora_git
 
   tasks:

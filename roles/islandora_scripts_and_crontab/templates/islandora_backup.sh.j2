@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DRUPAL_DIR="{{ drupal_dir }}"
+DRUSH_BIN="{{ drush_bin }}"
+BACKUP_DIR="{{ islandora_backup_dir }}"
+
+$DRUSH_BIN --root=$DRUPAL_DIR config:export --destination=$BACKUP_DIR/config-$(date '+%Y%m%d')
+
+tar -cjf $BACKUP_DIR/config-$(date '+%Y%m%d').tar.bz2 $BACKUP_DIR/config-$(date '+%Y%m%d') && rm -rf $BACKUP_DIR/config-$(date '+%Y%m%d')
+
+
+$DRUSH_BIN --root=$DRUPAL_DIR sql:dump --extra-dump=--no-tablespaces --result-file=$BACKUP_DIR/drupal-$(date '+%Y%m%d').sql
+
+tar -cjf $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql.tar.bz2 $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql && rm -f $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql
+
+
+rsync -a --delete --exclude='drupal/vendor/' $DRUPAL_DIR $BACKUP_DIR
+
+tar --exclude-vcs-ignores --exclude='{{ drupal_dir }}/web/sites/default/files/*' --exclude='{{ drupal_dir }}/web/migrate/data/*' -cjf $BACKUP_DIR/www-$(date "+%Y%m%d").tar.bz2 "{{ www_dir }}"

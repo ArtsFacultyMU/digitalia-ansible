@@ -1,3 +1,8 @@
 [phil:vars]
 ssh_users=["krejcir","navratil","strakosova","adler","brejchova"]
+www_dir="/var/www/html"
+drupal_dir="/var/www/html/drupal"
+drush_bin="/var/www/html/drupal/vendor/drush/drush/drush"
+composer_bin="/usr/local/bin/composer"
+
 

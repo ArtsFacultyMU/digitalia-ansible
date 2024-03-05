@@ -1,0 +1,4 @@
+---
+username: islandora
+drush_dir: "{{ drupal_dir }}/vendor/drush/drush"
+

@@ -1,0 +1,16 @@
+---
+- name: Islandora crontab cleanup
+  hosts: phil_islandora
+
+  tasks:
+    - name: Remove all cron entries for root
+      cron:
+        name: "Remove all existing crontab entries"
+        state: absent
+    
+    - name: Remove all cron entries for islandora
+      cron:
+        name: "Remove all existing crontab entries"
+        state: absent
+      become_user: islandora
+  

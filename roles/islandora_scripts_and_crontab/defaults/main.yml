@@ -1,0 +1,7 @@
+---
+root_bin_dir: "/root/bin"
+root_logs_dir: "/root/logs"
+
+islandora_bin_dir: "/home/islandora/bin"
+islandora_backup_dir: "/root/backup"
+
