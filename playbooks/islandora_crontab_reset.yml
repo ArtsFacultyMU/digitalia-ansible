@@ -4,13 +4,12 @@
 
   tasks:
     - name: Remove all cron entries for root
-      cron:
-        name: "Remove all existing crontab entries"
-        state: absent
+      ansible.builtin.shell: crontab -r        
+      ignore_errors: true
     
     - name: Remove all cron entries for islandora
-      cron:
-        name: "Remove all existing crontab entries"
-        state: absent
+      ansible.builtin.shell: crontab -r        
+      ignore_errors: true
+      become: true
       become_user: islandora
   

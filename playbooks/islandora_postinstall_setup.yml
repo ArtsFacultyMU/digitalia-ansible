@@ -6,6 +6,7 @@
     - islandora_scripts_and_crontab
     - islandora_environment
     - islandora_git
+    - islandora_apache
 
   tasks:
     - name: Remove islandora user privileges

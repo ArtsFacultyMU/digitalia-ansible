@@ -1,0 +1,33 @@
+---
+- name: Islandora crontab cleanup
+  hosts: phil_islandora
+
+  tasks:
+    - name: Remove old scripts from root/bin
+      ansible.builtin.file:
+        path: "/root/bin/{{ item }}"
+        state: absent
+      loop:
+        - islandora-backup
+        - watch.sh
+    
+    - name: Remove old distrib stuff
+      ansible.builtin.file:
+        path: "/root/{{ item }}"
+        state: absent
+      loop:
+        - distrib
+        - distrib.tar.bz2
+
+
+
+    - name: Remove old scripts from root/bin
+      ansible.builtin.file:
+        path: "/home/islandora/bin/{{ item }}"
+        state: absent
+      loop:
+        - islandora-security-checks
+        - islandora-security-setup-islandora
+        - islandora-security-update
+      become_user: islandora
+  

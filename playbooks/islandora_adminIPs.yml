@@ -3,4 +3,4 @@
   hosts: phil_islandora
 
   roles:
-    - apache
+    - islandora_apache

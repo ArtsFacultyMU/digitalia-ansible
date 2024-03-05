@@ -1,4 +1,5 @@
 ---
+
 - name: Create bin dir
   ansible.builtin.file:
     path: "{{ root_bin_dir }}"
@@ -6,13 +7,13 @@
     owner: root
     group: root
     mode: "0700"
-  tag: scripts
+  tags: scripts
 
 - name: Check bin dir
   ansible.builtin.stat:
     path: "{{ root_bin_dir }}"
   register: root_bin_dir_res
-  tag: scripts
+  tags: scripts
 
 - name: Create bin logs
   ansible.builtin.file:
@@ -21,13 +22,13 @@
     owner: root
     group: root
     mode: "0700"
-  tag: scripts
+  tags: scripts
 
 - name: Check logs dir
   ansible.builtin.stat:
     path: "{{ root_logs_dir }}"
   register: root_logs_dir_res
-  tag: scripts
+  tags: scripts
 
 - name: Copy watch script
   ansible.builtin.template:
@@ -42,7 +43,7 @@
     - root_bin_dir_res.stat.isdir 
     - root_logs_dir_res.stat.exists
     - root_logs_dir_res.stat.isdir
-  tag: scripts
+  tags: scripts
 
 - name: Update cron to run watch.sh script
   ansible.builtin.cron:
@@ -51,7 +52,7 @@
     name: "islandora_service_watch"
     job: "{{ root_bin_dir }}/watch.sh"
   when: copy_watch_script_res and production is defined
-  tag: crontab
+  tags: crontab
 
 - name: Copy root bin scripts
   ansible.builtin.template:
@@ -60,14 +61,14 @@
     owner: root
     group: root
     mode: u=rwx,g=r,o=r
-  when: 
-    - root_bin_dir_res.stat.exists 
-    - root_bin_dir_res.stat.isdir 
   loop:
     - bacula_backup_report.sh
     - islandora_backup_cleanup.sh
     - islandora_backup.sh
-  tag: scripts
+  when: 
+    - root_bin_dir_res.stat.exists 
+    - root_bin_dir_res.stat.isdir 
+  tags: scripts
 
 - name: Islandora set up backup cron job
   ansible.builtin.cron:
@@ -76,18 +77,32 @@
     user: root
     name: "islandora_backup"
     job: "{{ root_bin_dir}}/islandora_backup.sh"
-  tag: crontab
+  tags: crontab
 
-- name: Islandora set up backup cron job
+- name: Islandora set up backup clean cron job
   ansible.builtin.cron:
     minute: 0
     hour: 4
     user: root
     name: "islandora_backup_cleanup"
     job: "{{ root_bin_dir}}/islandora_backup_cleanup.sh"
-  tag: crontab
+  tags: crontab
 
-
+- name: Check for /etc/bacula dir
+  ansible.builtin.stat:
+    path: "/etc/bacula"
+  register: etc_bacula_dir_res
+  tags: crontab
+ 
+- name: Islandora set up bacula report cron job
+  ansible.builtin.cron:
+    minute: 40
+    hour: 8
+    user: root
+    name: "bacula_report"
+    job: "{{ root_bin_dir}}/bacula_backup_report.sh"
+  when: etc_bacula_dir_res.stat.exists and production is defined
+  tags: crontab
 
 - name: Set up islandora:islandora for drupal dir
   ansible.builtin.file:
@@ -106,13 +121,6 @@
     group: www-data
     mode: "g+w"
 
-- name: Copy islandora twpol.txt 
-  ansible.builtin.template:
-    src: twpol.txt
-    dest: /etc/tripwire/twpol.txt
-  register: twpol_res
-
-
 - name: Create islandora bin dir
   ansible.builtin.file:
     path: "{{ islandora_bin_dir }}"
@@ -120,17 +128,17 @@
     owner: islandora
     group: islandora
     mode: "0700"
-  tag: scripts
+  tags: scripts
 
 - name: Check islandora bin dir
   ansible.builtin.stat:
     path: "{{ islandora_bin_dir }}"
   register: islandora_bin_dir_res
-  tag: scripts
+  tags: scripts
 
 - name: Copy islandora bin scripts
   ansible.builtin.template:
-    src: "{{ item }}"
+    src: "{{ item }}.j2"
     dest: "{{ islandora_bin_dir}}/{{ item }}"
     owner: islandora
     group: islandora
@@ -141,14 +149,13 @@
   loop: 
     - islandora_security_checks.sh
     - islandora_drupal_security_setup.sh
-    - islandora_security_update.sh
-  tag: scripts
+  tags: scripts
 
 - name: Check islandora_security_checks.sh script
   ansible.builtin.stat:
-    path: "{{ islandora_bin_dir }}/islandora-security-checks"
+    path: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
   register: islandora_security_checks_script_res
-  tag: scripts
+  tags: scripts
  
 - name: Update cron to run islandora_security_checks.sh script
   ansible.builtin.cron:
@@ -158,6 +165,8 @@
     name: "security_checks"
     job: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
   when: islandora_security_checks_script_res
-  tag: scripts
+  become: yes
+  become_user: islandora
+  tags: scripts
 
 
