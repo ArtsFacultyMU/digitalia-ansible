@@ -19,11 +19,13 @@
         arguments: 'drupal/bartik'
         working_dir: "{{ drupal_dir }}"
         composer_executable: "{{ composer_bin }}"
+      tags: modules
 
     - name: Create 'platform_specific' dir
       ansible.builtin.file:
         state: directory
         path: "{{ theme_dir }}/platform_specific"
+      tags: platform_specific
 
     - name: Create dirs inside 'platform_specific'
       ansible.builtin.file:
@@ -33,9 +35,11 @@
         - css
         - images
         - templates
+      tags: platform_specific
 
     - name: Create css style file
       ansible.builtin.file:
         state: touch
         path: "{{ theme_dir }}/platform_specific/css/style.css"
+      tags: platform_specific
 

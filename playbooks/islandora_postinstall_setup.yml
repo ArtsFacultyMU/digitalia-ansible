@@ -1,6 +1,6 @@
 ---
-- name: Set up various scripts fo Islandora servers
-  hosts: islandora
+- name: Set up environment, scripts, cront etc. at Islandora servers
+  hosts: phil_islandora
 
   roles:
     - islandora_scripts_and_crontab
@@ -12,5 +12,30 @@
     - name: Remove islandora user privileges
       ansible.builtin.user:
         name: islandora
-        password: "!"
+        password: "*"
         groups: islandora,www-data
+      tags: user
+    
+    - name: Install 'simple_block' module
+      community.general.composer:
+        command: require
+        arguments: 'drupal/simple_block'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+      register: simple_block_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Enable 'simple_block' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} en simple_block"
+      when: simple_block_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+
+
+
