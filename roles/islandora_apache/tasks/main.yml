@@ -2,6 +2,7 @@
 - name: "Check if Apache is installed"
   ansible.builtin.package_facts:
     manager: "auto"
+  tags: islandora_apache
 
 - name: Copy admin IPs 
   ansible.builtin.template:
@@ -16,6 +17,7 @@
     - "'apache2' in ansible_facts.packages"
   notify:
     - Reload apache
+  tags: islandora_apache
 
 - name: Disable status module
   ansible.builtin.command:
@@ -24,3 +26,25 @@
     - "'apache2' in ansible_facts.packages"
   notify:
     - Restart apache
+  tags: islandora_apache
+
+- name: Check if ssl site is enabled
+  ansible.builtin.file:
+    path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+  register: le_ssl_site
+  tags: islandora_apache
+
+- name: Insert admin IPs block check
+  ansible.builtin.blockinfile:
+    path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+    insertafter: '</Directory>'
+    block: |
+      <Location /admin>
+        Deny from all  
+        Include /etc/apache2/adminIPs.conf
+      </Location>
+  when:
+    - inventory_hostname in groups["phil_islandora"]
+    - production is defined
+    - "'apache2' in ansible_facts.packages"
+  tags: islandora_apache
