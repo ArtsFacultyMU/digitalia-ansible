@@ -112,6 +112,7 @@
     owner: islandora
     group: islandora
     mode: "o-w"
+  tags: permissions
 
 - name: Set up www-data group for files dir
   ansible.builtin.file:
@@ -120,6 +121,15 @@
     recurse: yes
     group: www-data
     mode: "g+w"
+  tags: permissions
+
+- name: Set up .htaccess in Drupal's files dir
+  ansible.builtin.file:
+    path: "{{ drupal_dir}}/web/sites/default/files/.htaccess"
+    owner: islandora
+    group: islandora
+    mode: "0444"
+  tags: permissions
 
 - name: Create islandora bin dir
   ansible.builtin.file:
