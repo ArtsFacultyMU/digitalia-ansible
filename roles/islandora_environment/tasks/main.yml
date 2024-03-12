@@ -16,6 +16,7 @@
     create: yes
   become: yes
   become_user: islandora
+  tags: aliases
 
 - name: Set alias to switch to drupal islandora_muni theme directory
   ansible.builtin.lineinfile:
@@ -24,6 +25,16 @@
     create: yes
   become: yes
   become_user: islandora
+  tags: aliases
+
+- name: Set alias to switch to drupal modules directory
+  ansible.builtin.lineinfile:
+    path: "/home/{{ username }}/.bashrc"
+    line: "alias cdmodules='cd {{ drupal_dir }}/web/modules/custom'"
+    create: yes
+  become: yes
+  become_user: islandora
+  tags: aliases
 
 - name: Set PATH to handle proper drush binary
   ansible.builtin.lineinfile:
@@ -44,7 +55,5 @@
     src: twpol.txt
     dest: /etc/tripwire/twpol.txt
   when: tripwire_dir_res.stat.exists
-
-
 
 
