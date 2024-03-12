@@ -15,7 +15,7 @@
         password: "*"
         groups: islandora,www-data
       tags: user
-    
+
     - name: Install 'simple_block' module
       community.general.composer:
         command: require
@@ -32,6 +32,73 @@
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en simple_block"
       when: simple_block_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Install 'security_review' module
+      community.general.composer:
+        command: require
+        arguments: 'drupal/security_review'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+      register: security_review_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Enable 'security_review' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} en security_review"
+      when: security_review_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Install 'flood_control' module
+      community.general.composer:
+        command: require
+        arguments: 'drupal/flood_control'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+      register: flood_control_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Enable 'flood_control' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} en flood_control"
+      when: flood_control_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Configure ip_limit for 'flood_control' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} cset user.flood ip_limit 3"
+      when: flood_control_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Configure user_limit for 'flood_control' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} cset user.flood user_limit 3"
+      when: flood_control_res
+      become: yes
+      become_user: islandora
+      tags: modules
+
+    - name: Configure user.settings register admin_only for 'flood_control' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} cset user.settings register admin_only"
+      when: flood_control_res
       become: yes
       become_user: islandora
       tags: modules
