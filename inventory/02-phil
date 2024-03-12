@@ -12,7 +12,7 @@ herbaria.phil.muni.cz
 herbaria-devel.phil.muni.cz
 islandora-test.phil.muni.cz
 projectiles.phil.muni.cz production="y" backup="y"
-rapcor.phil.muni.cz
+rapcor.phil.muni.cz production="y"
 rapcor-devel.phil.muni.cz
 scf-devel.phil.muni.cz
 tkaniny-devel.phil.muni.cz
