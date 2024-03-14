@@ -79,7 +79,7 @@
     - name: Configure ip_limit for 'flood_control' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
-        cmd: "{{ drush_bin}} cset user.flood ip_limit 3"
+        cmd: "{{ drush_bin}} -y cset user.flood ip_limit 3"
       when: flood_control_res
       become: yes
       become_user: islandora
@@ -88,7 +88,7 @@
     - name: Configure user_limit for 'flood_control' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
-        cmd: "{{ drush_bin}} cset user.flood user_limit 3"
+        cmd: "{{ drush_bin}} -y cset user.flood user_limit 3"
       when: flood_control_res
       become: yes
       become_user: islandora
@@ -97,7 +97,7 @@
     - name: Configure user.settings register admin_only for 'flood_control' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
-        cmd: "{{ drush_bin}} cset user.settings register admin_only"
+        cmd: "{{ drush_bin}} -y cset user.settings register admin_only"
       when: flood_control_res
       become: yes
       become_user: islandora
