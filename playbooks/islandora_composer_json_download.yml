@@ -1,0 +1,10 @@
+---
+- name: Download composer.jsons over SSH
+  hosts: phil_ubuntu
+
+  tasks:
+    - name: Download composer.json
+      ansible.builtin.fetch:
+        src: /var/www/html/drupal/composer.json
+        dest: "/tmp/composers_files/{{ inventory_hostname }}"
+        flat: yes

@@ -1,0 +1,17 @@
+---
+- name: Copy composer.jsons to datarepo.phil.muni.cz
+  hosts: datarepo.phil.muni.cz
+
+  tasks:
+    - name: Ensure the /root/composers_files are present
+      ansible.builtin.file:
+        path: "/root/composers_files"
+        state: directory
+        mode: "0640"
+
+    - name: Copy composer.jsons
+      ansible.builtin.copy:
+        src: "/tmp/composers_files/"
+        dest: "/root/composers_files"
+        
+
