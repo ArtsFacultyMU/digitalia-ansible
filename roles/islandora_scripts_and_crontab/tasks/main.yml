@@ -131,6 +131,23 @@
     mode: "0444"
   tags: permissions
 
+- name: Set up permissions composer.json in Drupal root
+  ansible.builtin.file:
+    path: "{{ drupal_dir}}"
+    owner: islandora
+    group: islandora
+    mode: "0755"
+  tags: permissions
+
+
+- name: Set up permissions composer.json in Drupal root
+  ansible.builtin.file:
+    path: "{{ drupal_dir}}/composer.json"
+    owner: islandora
+    group: islandora
+    mode: "0644"
+  tags: permissions
+
 - name: Create islandora bin dir
   ansible.builtin.file:
     path: "{{ islandora_bin_dir }}"
