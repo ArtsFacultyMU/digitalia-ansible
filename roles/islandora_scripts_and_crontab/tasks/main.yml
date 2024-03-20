@@ -123,12 +123,13 @@
     mode: "g+w"
   tags: permissions
 
-- name: Set up .htaccess in Drupal's files dir
-  ansible.builtin.file:
-    path: "{{ drupal_dir}}/web/sites/default/files/.htaccess"
+- name: Copy .htaccess in Drupal's files dir
+  ansible.builtin.copy:
+    src: .htaccess
+    dest: "{{ drupal_dir}}/web/sites/default/files/.htaccess"
     owner: islandora
-    group: islandora
-    mode: "0444"
+    group: www-data
+    mode: '0444'
   tags: permissions
 
 - name: Set up permissions composer.json in Drupal root
