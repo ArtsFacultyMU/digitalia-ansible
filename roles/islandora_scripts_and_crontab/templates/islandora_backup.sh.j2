@@ -16,4 +16,4 @@ tar -cjf $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql.tar.bz2 $BACKUP_DIR/drupal-$(d
 
 rsync -a --delete --exclude='drupal/vendor/' $DRUPAL_DIR $BACKUP_DIR
 
-tar --exclude-vcs-ignores --exclude='{{ drupal_dir }}/web/sites/default/files/*' --exclude='{{ drupal_dir }}/web/migrate/data/*' -cjf $BACKUP_DIR/www-$(date "+%Y%m%d").tar.bz2 "{{ www_dir }}"
+tar --exclude-vcs-ignores --exclude='{{ drupal_dir }}/web/sites/default/files/*' --exclude='{{ drupal_dir }}/web/migrate/*' -cjf $BACKUP_DIR/www-$(date "+%Y%m%d").tar.bz2 "{{ www_dir }}"
