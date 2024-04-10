@@ -18,10 +18,20 @@
   become_user: islandora
   tags: aliases
 
-- name: Set alias to switch to drupal islandora_muni theme directory
+- name: Remove old alias to switch to drupal islandora_muni theme directory
   ansible.builtin.lineinfile:
     path: "/home/{{ username }}/.bashrc"
     line: "alias cdtheme='cd {{ drupal_dir }}/web/themes/islandora_muni'"
+    create: yes
+    state: absent
+  become: yes
+  become_user: islandora
+  tags: aliases
+
+- name: Set alias to switch to drupal islandora_muni theme directory
+  ansible.builtin.lineinfile:
+    path: "/home/{{ username }}/.bashrc"
+    line: "alias cdtheme='cd {{ drupal_dir }}/web/themes/custom/islandora_muni'"
     create: yes
   become: yes
   become_user: islandora
