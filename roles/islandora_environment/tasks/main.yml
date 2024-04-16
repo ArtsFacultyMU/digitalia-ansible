@@ -58,12 +58,95 @@
   ansible.builtin.stat:
     path: /etc/tripwire
   register: tripwire_dir_res
-
+  tags: tripwire
 
 - name: Copy islandora twpol.txt 
   ansible.builtin.copy:
     src: twpol.txt
     dest: /etc/tripwire/twpol.txt
   when: tripwire_dir_res.stat.exists
+  tags: tripwire
+
+- name: Check for /etc/systemd/system/tomcat9.service.d/override.conf
+  ansible.builtin.stat:
+    path: /etc/systemd/system/tomcat9.service.d/override.conf
+  register: tomcat_override_file_res
+  tags: 
+    - tomcat
+    - permissions
+
+- name: Allow /data/fcrepo path to write for tomcat
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/system/tomcat9.service.d/override.conf
+    line: "ReadWritePaths=/data/fcrepo"
+  when: tomcat_override_file_res.stat.exists
+  notify: Restart Tomcat
+  tags: 
+    - tomcat
+    - permissions
+
+- name: Allow /data/fcrepo-data path to write for tomcat
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/system/tomcat9.service.d/override.conf
+    line: "ReadWritePaths=/data/fcrepo-data"
+  when: tomcat_override_file_res.stat.exists
+  notify: Restart Tomcat
+  tags: 
+    - tomcat 
+    - permissions
+
+- name: Create dir /var/www/html/drupal/config/export/configs
+  ansible.builtin.file:
+    path: /var/www/html/drupal/config/export/configs
+    state: directory
+    owner: islandora
+    group: islandora
+    mode: '0755'
+    recurse: yes
+  tags: permissions
+
+- name: Set up islandora:islandora for drupal dir
+  ansible.builtin.file:
+    path: /var/www/html/
+    state: directory
+    recurse: yes
+    owner: islandora
+    group: islandora
+    mode: "o-w"
+  tags: permissions
+
+- name: Set up www-data group for files dir
+  ansible.builtin.file:
+    path: /var/www/html/drupal/web/sites/default/files
+    state: directory
+    recurse: yes
+    group: www-data
+    mode: "g+w"
+  tags: permissions
+
+- name: Copy .htaccess in Drupal's files dir
+  ansible.builtin.copy:
+    src: .htaccess
+    dest: "{{ drupal_dir}}/web/sites/default/files/.htaccess"
+    owner: islandora
+    group: www-data
+    mode: '0444'
+  tags: permissions
+
+- name: Set up permissions composer.json in Drupal root
+  ansible.builtin.file:
+    path: "{{ drupal_dir}}"
+    owner: islandora
+    group: islandora
+    mode: "0755"
+  tags: permissions
+
+- name: Set up permissions composer.json in Drupal root
+  ansible.builtin.file:
+    path: "{{ drupal_dir}}/composer.json"
+    owner: islandora
+    group: islandora
+    mode: "0644"
+  tags: permissions
 
 
