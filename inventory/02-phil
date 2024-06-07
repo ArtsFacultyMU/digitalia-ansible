@@ -18,6 +18,7 @@ rapcor-devel.phil.muni.cz
 scf-devel.phil.muni.cz
 tkaniny-devel.phil.muni.cz
 www.beauty-patterns.org production="y" backup="y" 
+invenio.phil.muni.cz
 
 [phil_debian]
 handle.phil.muni.cz
