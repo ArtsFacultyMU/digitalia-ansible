@@ -95,6 +95,26 @@
     - tomcat 
     - permissions
 
+- name: Create dir /data/fcrepo
+  ansible.builtin.file:
+    path: /data/fcrepo
+    state: directory
+    owner: tomcat
+    group: tomcat
+    mode: '0755'
+    recurse: yes
+  tags: permissions
+
+- name: Create dir /data/fcrepo-data
+  ansible.builtin.file:
+    path: /data/fcrepo-data
+    state: directory
+    owner: tomcat
+    group: tomcat
+    mode: '0755'
+    recurse: yes
+  tags: permissions
+
 - name: Create dir /var/www/html/drupal/config/export/configs
   ansible.builtin.file:
     path: /var/www/html/drupal/config/export/configs
