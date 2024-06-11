@@ -1,5 +1,6 @@
 [ubuntu:children]
 phil_ubuntu
+phil_ubuntu_test
 
 [debian:children]
 phil_debian
@@ -17,5 +18,6 @@ phil_debian
 [phil:children]
 phil_ubuntu
 phil_debian
+phil_ubuntu_test
 
 
