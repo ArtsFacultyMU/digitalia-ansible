@@ -150,7 +150,9 @@
   ansible.builtin.stat:
     path: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
   register: islandora_security_checks_script_res
-  tags: scripts
+  tags: 
+    - scripts
+    - crontab
  
 - name: Update cron to run islandora_security_checks.sh script
   ansible.builtin.cron:
@@ -162,6 +164,19 @@
   when: islandora_security_checks_script_res
   become: yes
   become_user: islandora
-  tags: scripts
+  tags: 
+    - scripts
+    - crontab
+
+- name: Add cache cleanup to cron for islandora
+  ansible.builtin.cron:
+    minute: "15"
+    hour: "3"
+    user: islandora
+    name: "cache_cleanup"
+    job: "/var/www/html/drupal/vendor/drush/drush/drush --root=/var/www/html/drupal cr"
+  become: yes
+  become_user: islandora
+  tags: crontab
 
 
