@@ -174,7 +174,7 @@
     hour: "3"
     user: islandora
     name: "cache_cleanup"
-    job: "/var/www/html/drupal/vendor/drush/drush/drush --root=/var/www/html/drupal cr"
+    job: "/var/www/html/drupal/vendor/drush/drush/drush --quiet --root=/var/www/html/drupal cr"
   become: yes
   become_user: islandora
   tags: crontab
