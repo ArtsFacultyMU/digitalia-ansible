@@ -20,7 +20,7 @@ tkaniny-devel.phil.muni.cz
 www.beauty-patterns.org production="y" backup="y" 
 
 [phil_ubuntu_test]
-invenio.phil.muni.cz
+invenio.phil.muni.cz docker="y"
 
 [phil_debian]
 handle.phil.muni.cz
