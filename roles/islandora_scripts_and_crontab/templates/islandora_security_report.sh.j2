@@ -1,0 +1,8 @@
+#!/bin/bash
+
+COMPOSER_BIN="/usr/local/bin/composer"
+DRUPAL_DIR="/var/www/html/drupal"
+format=${1:-"summary"}
+
+# print summary of security updates
+$COMPOSER_BIN --working-dir=${DRUPAL_DIR} --format=$format audit

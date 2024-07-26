@@ -144,6 +144,7 @@
   loop: 
     - islandora_security_checks.sh
     - islandora_drupal_security_setup.sh
+    - islandora_security_report.sh
   tags: scripts
 
 - name: Check islandora_security_checks.sh script
@@ -161,6 +162,7 @@
     user: islandora
     name: "security_checks"
     job: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
+    state: absent
   when: islandora_security_checks_script_res
   become: yes
   become_user: islandora
