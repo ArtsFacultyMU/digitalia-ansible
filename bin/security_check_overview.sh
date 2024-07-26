@@ -3,7 +3,7 @@
 ISLANDORA_SERVERS_LIST=/home/krejvl/ansible/digitalia-ansible/inventory/02-phil
 LOGSDIR=/home/krejvl/logs
 RUSER=islandora
-EMAILS='krejcir@ics.muni.cz strakosova@phil.muni.cz 469190@mail.muni.cz brejchova@phil.muni.cz'
+EMAILS='krejcir@ics.muni.cz, strakosova@phil.muni.cz, 469190@mail.muni.cz, brejchova@phil.muni.cz'
 
 RED_BOLD="\033[1;31m"
 GREEN_BOLD="\033[1;32m"
@@ -75,7 +75,7 @@ echo "</div>" >> $lastlogfile
 
 if [ $mail != 'no' ]
 then
-	cat $lastlogfile | mutt -s "Islandora security report" -e 'set from=root@sebulba.ics.muni.cz' -e 'set content_type=text/html' krejcir@ics.muni.cz
+	cat $lastlogfile | mutt -s "Islandora security report" -e 'set from=root@sebulba.ics.muni.cz' -e 'set content_type=text/html' -- "$EMAILS" 
 fi
 
 cp $lastlogfile $logfile
