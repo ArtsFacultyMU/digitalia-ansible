@@ -16,8 +16,9 @@ mail=${2:-"no"}
 
 if [ $# -lt 1 ];
 then
-	echo "security_check_overview.sh check"
-	echo "Send an overview email on pending security updates on modules"
+	echo "security_check_overview.sh check [mail]"
+	echo "Send an overview email on pending security updates on modules."
+	echo "If 'mail' is specified, the report is sent to EMAILS in HTML format."
 	exit 0
 fi
 
@@ -75,6 +76,7 @@ echo "</div>" >> $lastlogfile
 
 if [ $mail != 'no' ]
 then
+	echo "Sending report via mail to: $EMAILS"
 	cat $lastlogfile | mutt -s "Islandora security report" -e 'set from=root@sebulba.ics.muni.cz' -e 'set content_type=text/html' -- "$EMAILS" 
 fi
 
