@@ -39,7 +39,7 @@ do
 	echo $line | grep -q 'phil_ubuntu_test'
 	if [ $? -eq 0 ]; then break; fi
 
-	echo $line | grep -q 'phil\.muni\.cz'
+	echo $line | grep -q -e 'phil\.muni\.cz' -e 'www.beauty-patterns.org'
 
 	if [ $? -eq 0 ]
 	then
