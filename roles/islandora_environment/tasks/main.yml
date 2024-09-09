@@ -169,4 +169,13 @@
     mode: "0644"
   tags: permissions
 
+- name: Disable MySQL binary logging
+  ansible.builtin.copy: 
+    src: disable_binary_log.cnf
+    dest: /etc/mysql/conf.d/disable_binary_log.cnf
+    owner: root
+    group: root
+    mode: '0644'
+  tags: mysql
+
 
