@@ -8,7 +8,7 @@ dan-devel2.phil.muni.cz # projectiles-devel.phil.muni.cz
 digilib.phil.muni.cz production="y" backup="y"
 digilib-devel.phil.muni.cz
 filmovebrno-devel.phil.muni.cz
-herbaria.phil.muni.cz backup="y"
+herbaria.phil.muni.cz production='y' backup="y"
 herbaria-devel.phil.muni.cz
 islandora-sandbox-bea.phil.muni.cz
 islandora-test.phil.muni.cz
