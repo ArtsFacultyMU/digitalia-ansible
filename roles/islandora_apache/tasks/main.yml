@@ -48,3 +48,45 @@
     - production is defined
     - "'apache2' in ansible_facts.packages"
   tags: islandora_apache
+
+- name: Enable rewrite module
+  ansible.builtin.command:
+    cmd: a2enmod rewrite
+  when:
+    - "'apache2' in ansible_facts.packages"
+  notify:
+    - Restart apache
+  tags: islandora_apache
+
+- name: Copy language switch config
+  ansible.builtin.template:
+    src: islandora-language-hack.conf.j2
+    dest: /etc/apache2/islandora-language-hack.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: 
+    - inventory_hostname in groups["phil_islandora"]
+    - "'apache2' in ansible_facts.packages"
+  notify:
+    - Reload apache
+  tags: islandora_apache
+
+- name: Check the language switch config is present
+  ansible.builtin.stat:
+    path: /etc/apache2/islandora-language-hack.conf
+  register: language_conf
+  tags: islandora_apache
+
+- name: Insert rewrite language block
+  ansible.builtin.blockinfile:
+    path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+    insertafter: 'Include /etc/letsencrypt/options-ssl-apache.conf'
+    block: |
+      # Language switch islandora hack
+      Include /etc/apache2/islandora-language-hack.conf
+  when: 
+    - language_conf.stat.exists
+    - inventory_hostname in groups["phil_islandora"]
+    - "'apache2' in ansible_facts.packages"
+  tags: islandora_apache

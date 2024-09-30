@@ -1,0 +1,25 @@
+# Language switching shenanigans below
+RewriteEngine On
+
+# language codes are from ISO 639-1
+# source and destination must differ in more than language code
+# source language must be absent from list in Rewrite Rule to prevent loops (couldn't figure out more general solution)
+RewriteCond "%{QUERY_STRING}" "!languageswitch=1"
+RewriteCond expr "'%{REQUEST_URI}=%{HTTP_HOST}=%{HTTP_REFERER}' =~ m#/([a-z]{2}).*=([a-z-\.]*)=https://([a-z-\.0-9]*)/([a-z]{2}).*# && $4 =~ m#^cs$# && $1 != $4 && $2 == $3"
+RewriteRule "^/(en|fr|de|sk)(.*)" "/%4$2" [R,L]
+
+RewriteCond "%{QUERY_STRING}" "!languageswitch=1"
+RewriteCond expr "'%{REQUEST_URI}=%{HTTP_HOST}=%{HTTP_REFERER}' =~ m#/([a-z]{2}).*=([a-z-\.]*)=https://([a-z-\.0-9]*)/([a-z]{2}).*# && $4 =~ m#^de$# && $1 != $4 && $2 == $3"
+RewriteRule "^/(en|fr|sk|cs)(.*)" "/%4$2" [R,L]
+
+RewriteCond "%{QUERY_STRING}" "!languageswitch=1"
+RewriteCond expr "'%{REQUEST_URI}=%{HTTP_HOST}=%{HTTP_REFERER}' =~ m#/([a-z]{2}).*=([a-z-\.]*)=https://([a-z-\.0-9]*)/([a-z]{2}).*# && $4 =~ m#^en$# && $1 != $4 && $2 == $3"
+RewriteRule "^/(fr|de|sk|cs)(.*)" "/%4$2" [R,L]
+
+RewriteCond "%{QUERY_STRING}" "!languageswitch=1"
+RewriteCond expr "'%{REQUEST_URI}=%{HTTP_HOST}=%{HTTP_REFERER}' =~ m#/([a-z]{2}).*=([a-z-\.]*)=https://([a-z-\.0-9]*)/([a-z]{2}).*# && $4 =~ m#^fr$# && $1 != $4 && $2 == $3"
+RewriteRule "^/(en|de|sk|cs)(.*)" "/%4$2" [R,L]
+
+RewriteCond "%{QUERY_STRING}" "!languageswitch=1"
+RewriteCond expr "'%{REQUEST_URI}=%{HTTP_HOST}=%{HTTP_REFERER}' =~ m#/([a-z]{2}).*=([a-z-\.]*)=https://([a-z-\.0-9]*)/([a-z]{2}).*# && $4 =~ m#^sk$# && $1 != $4 && $2 == $3"
+RewriteRule "^/(en|fr|de|cs)(.*)" "/%4$2" [R,L]

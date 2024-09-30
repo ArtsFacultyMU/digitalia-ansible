@@ -1,0 +1,3 @@
+user: islandora
+repos:
+  - { repo: "ArtsFacultyMU/digitalia_module-digitalia_muni_general_includes", dest: "/var/www/html/drupal/web/modules/custom/digitalia_muni_general_includes" }
