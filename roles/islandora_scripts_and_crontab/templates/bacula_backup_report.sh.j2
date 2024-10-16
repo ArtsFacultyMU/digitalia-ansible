@@ -1,3 +1,10 @@
 #!/bin/sh
 
-echo 'status all' | /usr/sbin/bconsole
+BCONSOLE_BIN=/usr/sbin/bconsole
+
+if ! [ -f $BCONSOLE_BIN ]
+	then BCONSOLE_BIN=/usr/bin/bconsole
+fi
+
+
+echo 'status all' | $BCONSOLE_BIN
