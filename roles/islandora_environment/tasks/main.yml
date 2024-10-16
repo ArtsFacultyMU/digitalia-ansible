@@ -169,7 +169,7 @@
     mode: "0644"
   tags: permissions
 
-- name: Disable MySQL binary logging
+- name: Add MySQL binary logging off config file 
   ansible.builtin.copy: 
     src: disable_binary_log.cnf
     dest: /etc/mysql/conf.d/disable_binary_log.cnf
@@ -178,4 +178,10 @@
     mode: '0644'
   tags: mysql
 
+- name: Load MySQL binary logging off config file 
+  ansible.builtin.lineinfile:
+    path: /etc/mysql/my.cnf
+    insertafter: "EOF"
+    line: '!include /etc/mysql/conf.d/disable_binary_log.cnf'
+  tags: mysql
 
