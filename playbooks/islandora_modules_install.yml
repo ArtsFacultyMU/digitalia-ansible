@@ -1,0 +1,15 @@
+---
+- name: Enable modules
+  hosts: islandora 
+  #vars: 
+  #  modules:
+  #    - "module name1" 
+  #    - "module name2"
+
+  become: true
+  become_user: islandora
+
+  tasks:
+  - name: Enable modules
+    ansible.builtin.command: "{{ drush_bin }} --root={{ drupal_dir}} en {{ item }}"
+    loop: "{{ modules }}"
