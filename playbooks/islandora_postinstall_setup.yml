@@ -1,6 +1,6 @@
 ---
 - name: Set up environment, scripts, cront etc. at Islandora servers
-  hosts: common_islandora
+  hosts: islandora
 
   roles:
     - islandora_scripts_and_crontab
@@ -32,6 +32,7 @@
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en simple_block"
       when: simple_block_res
+      ignore_errors: yes
       become: yes
       become_user: islandora
       tags: modules
@@ -52,6 +53,7 @@
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en security_review"
       when: security_review_res
+      ignore_errors: yes
       become: yes
       become_user: islandora
       tags: modules
@@ -72,6 +74,7 @@
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en flood_control"
       when: flood_control_res
+      ignore_errors: yes
       become: yes
       become_user: islandora
       tags: modules
@@ -105,4 +108,4 @@
 
 
 
-
+  

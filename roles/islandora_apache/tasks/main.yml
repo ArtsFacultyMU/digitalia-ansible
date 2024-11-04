@@ -12,7 +12,7 @@
     group: root
     mode: u=rw,g=r,o=r
   when: 
-    - inventory_hostname in groups["phil_islandora"]
+    - inventory_hostname in groups["islandora"]
     - production is defined
     - "'apache2' in ansible_facts.packages"
   notify:
@@ -44,7 +44,7 @@
         Include /etc/apache2/adminIPs.conf
       </Location>
   when:
-    - inventory_hostname in groups["phil_islandora"]
+    - inventory_hostname in groups["islandora"]
     - production is defined
     - "'apache2' in ansible_facts.packages"
   tags: islandora_apache
@@ -66,7 +66,7 @@
     group: root
     mode: u=rw,g=r,o=r
   when: 
-    - inventory_hostname in groups["phil_islandora"]
+    - inventory_hostname in groups["islandora"]
     - "'apache2' in ansible_facts.packages"
   notify:
     - Reload apache
@@ -87,6 +87,6 @@
       Include /etc/apache2/islandora-language-hack.conf
   when: 
     - language_conf.stat.exists
-    - inventory_hostname in groups["phil_islandora"]
+    - inventory_hostname in groups["islandora"]
     - "'apache2' in ansible_facts.packages"
   tags: islandora_apache

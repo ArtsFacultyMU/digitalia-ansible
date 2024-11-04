@@ -1,6 +1,6 @@
 ---
 - name: Download composer.jsons over SSH
-  hosts: phil_ubuntu
+  hosts: islandora
 
   tasks:
     - name: Download composer.json

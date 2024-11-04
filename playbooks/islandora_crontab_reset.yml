@@ -1,6 +1,6 @@
 ---
 - name: Islandora crontab cleanup
-  hosts: phil_islandora
+  hosts: islandora
 
   tasks:
     - name: Remove all cron entries for root

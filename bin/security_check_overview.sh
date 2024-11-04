@@ -34,15 +34,15 @@ echo "<div style='font-style: italic'>" >> $lastlogfile
 echo "[server name] [no_of_sec_issues] ([packges_affected])" | tee -a $lastlogfile
 echo "</div>" >> $lastlogfile
 
-while read line 
+ansible islandora --list-hosts | grep -v -e 'hosts' | sed 's/[ ]*//' | while read line 
 do
-	echo $line | grep -q 'phil_ubuntu_test'
-	if [ $? -eq 0 ]; then break; fi
+	#echo $line | grep -q 'phil_ubuntu_test'
+	#if [ $? -eq 0 ]; then break; fi
 
-	echo $line | grep -q -e 'phil\.muni\.cz' -e 'www.beauty-patterns.org'
+	#echo $line | grep -q -e 'phil\.muni\.cz' -e 'www.beauty-patterns.org'
 
-	if [ $? -eq 0 ]
-	then
+	#if [ $? -eq 0 ]
+	#then
 		server_name=`echo $line | sed 's/\(^[^ ]*\).*/\1/'`
 		res=`ssh -n ${RUSER}@${server_name} /home/islandora/bin/islandora_security_report.sh 2>&1 | grep -iv 'abandoned'`
 
@@ -67,8 +67,8 @@ do
 			echo -e "${GREEN}${server_name}${RESET}"
 			echo "<div><span style='color: green;'>${server_name}</span></div>" >> $lastlogfile
 		fi
-	fi
-done < ${ISLANDORA_SERVERS_LIST}
+	#fi
+done
 
 echo "<div style='margin-top: 1rem'>For details log on the affected server above as <span style='font-style: italic'>islandora</span> user and run</div>" >> $lastlogfile
 echo "<div style='font-family: monospace; margin-top: .5rem'>/home/islandora/bin/islandora_security_report.sh table</div>" >> $lastlogfile

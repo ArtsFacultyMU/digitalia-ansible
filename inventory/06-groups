@@ -8,9 +8,6 @@ phil_debian
 [islandora:children]
 phil_islandora
 
-[common_islandora:children]
-phil_islandora
-
 [myservers:children]
 phil_ubuntu
 phil_debian
