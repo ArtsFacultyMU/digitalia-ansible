@@ -81,12 +81,47 @@
 - name: Insert rewrite language block
   ansible.builtin.blockinfile:
     path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
-    insertafter: 'Include /etc/letsencrypt/options-ssl-apache.conf'
+    insertbefore: 'Include /etc/letsencrypt/options-ssl-apache.conf'
+    marker: "# {mark} ANSIBLE BLOCK language"
     block: |
       # Language switch islandora hack
       Include /etc/apache2/islandora-language-hack.conf
   when: 
     - language_conf.stat.exists
+    - inventory_hostname in groups["islandora"]
+    - "'apache2' in ansible_facts.packages"
+  tags: islandora_apache
+
+- name: Copy logging config
+  ansible.builtin.template:
+    src: islandora-logging.conf.j2
+    dest: /etc/apache2/islandora-logging.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: 
+    - inventory_hostname in groups["islandora"]
+    - "'apache2' in ansible_facts.packages"
+  notify:
+    - Reload apache
+  tags: islandora_apache
+
+- name: Check the logging config is present
+  ansible.builtin.stat:
+    path: /etc/apache2/islandora-logging.conf
+  register: logging_conf
+  tags: islandora_apache
+
+- name: Insert logging block
+  ansible.builtin.blockinfile:
+    path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+    insertbefore: 'Include /etc/letsencrypt/options-ssl-apache.conf'
+    marker: "# {mark} ANSIBLE BLOCK logging"
+    block: |
+      # Islandora logging
+      Include /etc/apache2/islandora-logging.conf
+  when: 
+    - logging_conf.stat.exists
     - inventory_hostname in groups["islandora"]
     - "'apache2' in ansible_facts.packages"
   tags: islandora_apache
