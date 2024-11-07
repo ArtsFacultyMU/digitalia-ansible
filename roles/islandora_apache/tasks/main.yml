@@ -37,7 +37,8 @@
 - name: Insert admin IPs block check
   ansible.builtin.blockinfile:
     path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
-    insertafter: '</Directory>'
+    insertafter: '.*</Directory>'
+    marker: "# {mark} ANSIBLE BLOCK adminIPs"
     block: |
       <Location /admin>
         Deny from all  
