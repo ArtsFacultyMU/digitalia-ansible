@@ -3,13 +3,13 @@
   hosts: islandora
 
   tasks:
-    - name: Remove old scripts from root/bin
-      ansible.builtin.file:
-        path: "/root/bin/{{ item }}"
-        state: absent
-      loop:
-        - islandora-backup
-        - watch.sh
+    # - name: Remove old scripts from root/bin
+    #  ansible.builtin.file:
+    #    path: "/root/bin/{{ item }}"
+    #    state: absent
+    #  loop:
+    #    - islandora-backup
+    #    - watch.sh
     
     - name: Remove old distrib stuff
       ansible.builtin.file:
@@ -30,4 +30,55 @@
         - islandora-security-setup-islandora
         - islandora-security-update
       become_user: islandora
-  
+ 
+    - name: Remove AdminIPs old block (no marker)
+      ansible.builtin.blockinfile:
+        path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+        insertafter: '</Directory>'
+        state: "absent"
+        block: |
+          <Location /admin>
+            Deny from all  
+            Include /etc/apache2/adminIPs.conf
+          </Location>
+
+    - name: Remove old rewrite language block (without marker)
+      ansible.builtin.blockinfile:
+       path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+       insertbefore: 'Include /etc/letsencrypt/options-ssl-apache.conf'
+       state: "absent"
+       block: |
+         # Language switch islandora hack
+         Include /etc/apache2/islandora-language-hack.conf
+   
+    - name: Remove old rewrite language block (with marker)
+      ansible.builtin.blockinfile:
+       path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+       state: "absent"
+       marker: "# {mark} ANSIBLE BLOCK language"
+       block: |
+         # Language switch islandora hack
+         Include /etc/apache2/islandora-language-hack.conf
+
+    - name: Remove old logging block (with marker)
+      ansible.builtin.blockinfile:
+        path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+        marker: "# {mark} ANSIBLE BLOCK logging"
+        state: "absent"
+        block: |
+          # Islandora logging
+          Include /etc/apache2/islandora-logging.conf
+
+    - name: Remove default custom logs logging
+      ansible.builtin.lineinfile:
+       path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+       state: "absent"
+       regexp: 'CustomLog.*'
+
+    - name: Remove default error logs logging
+      ansible.builtin.lineinfile:
+       path: "/etc/apache2/sites-available/islandora-le-ssl.conf"
+       state: "absent"
+       regexp: 'ErrorLog.*'
+
+
