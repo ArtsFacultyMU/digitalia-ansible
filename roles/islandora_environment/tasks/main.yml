@@ -147,7 +147,7 @@
 - name: Copy .htaccess in Drupal's files dir
   ansible.builtin.copy:
     src: .htaccess
-    dest: "{{ drupal_dir}}/web/sites/default/files/.htaccess"
+    dest: "{{ drupal_dir }}/web/sites/default/files/.htaccess"
     owner: islandora
     group: www-data
     mode: '0444'
@@ -155,7 +155,7 @@
 
 - name: Set up permissions composer.json in Drupal root
   ansible.builtin.file:
-    path: "{{ drupal_dir}}"
+    path: "{{ drupal_dir }}"
     owner: islandora
     group: islandora
     mode: "0755"
@@ -163,11 +163,20 @@
 
 - name: Set up permissions composer.json in Drupal root
   ansible.builtin.file:
-    path: "{{ drupal_dir}}/composer.json"
+    path: "{{ drupal_dir }}/composer.json"
     owner: islandora
     group: islandora
     mode: "0644"
   tags: permissions
+
+- name: Copy robots.txt to Drupal root dir
+  ansible.builtin.copy:
+    src: robots.txt
+    dest: "{{ drupal_dir }}/web/"
+    owner: islandora
+    group: islandora
+    mode: '0644'
+  tags: robots
 
 - name: Add MySQL binary logging off config file 
   ansible.builtin.copy: 
