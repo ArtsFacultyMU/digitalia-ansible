@@ -27,6 +27,10 @@
       become_user: islandora
       tags: modules
 
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: modules
+    
     - name: Enable 'simple_block' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
@@ -48,6 +52,10 @@
       become_user: islandora
       tags: modules
 
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: modules
+ 
     - name: Enable 'security_review' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
@@ -68,7 +76,11 @@
       become: yes
       become_user: islandora
       tags: modules
-
+    
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: modules
+ 
     - name: Enable 'flood_control' module
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
@@ -105,7 +117,8 @@
       become: yes
       become_user: islandora
       tags: modules
-
-
-
-  
+    
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: modules
+ 
