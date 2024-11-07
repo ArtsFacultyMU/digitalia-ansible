@@ -1,0 +1,18 @@
+---
+- name: Check if specific line is present in Apache config
+  hosts: islandora
+
+  tasks:
+    - name: Check if the specific line is present in the Apache configuration file
+      ansible.builtin.shell: "grep -q '^\\s*Include /etc/letsencrypt/options-ssl-apache.conf' /etc/apache2/sites-enabled/islandora-le-ssl.conf"
+      register: apache_check
+      ignore_errors: true
+
+    - name: Print result
+      debug:
+        msg: >
+          {% if apache_check.rc == 0 %}
+            The line is present in the file.
+          {% else %}
+            The line is NOT present in the file.
+          {% endif %}  
