@@ -109,7 +109,7 @@
     owner: tomcat
     group: tomcat
     mode: '0755'
-    recurse: yes
+    recurse: no
   tags: permissions
 
 - name: Create dir /data/fcrepo-data
@@ -119,7 +119,7 @@
     owner: tomcat
     group: tomcat
     mode: '0755'
-    recurse: yes
+    recurse: no
   tags: permissions
 
 - name: Create dir /var/www/html/drupal/config/export/configs
@@ -175,6 +175,25 @@
     group: islandora
     mode: "0644"
   tags: permissions
+
+- name: Check for Houdini/var/log/dev.log
+  ansible.builtin.stat:
+    path: /var/www/html/Crayfish/Houdini/var/log/dev.log
+  register: houdini_log_res
+  tags: 
+    - permissions
+    - logs-perms
+
+- name: Set up group www-data and write permissions for various log files
+  ansible.builtin.file:
+    path: /var/www/html/Crayfish/Houdini/var/log/dev.log
+    group: "www-data"
+    mode: "g+w"
+  when: houdini_log_res.stat.exists
+  tags: 
+    - permissions
+    - logs-perms
+
 
 - name: Copy robots.txt to Drupal root dir
   ansible.builtin.copy:
