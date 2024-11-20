@@ -120,5 +120,7 @@
     
     - name: Clear drush cache
       ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
-      tags: modules
+      tags: 
+        - modules
+        - cache_clear
  
