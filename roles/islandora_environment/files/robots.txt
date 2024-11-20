@@ -72,6 +72,14 @@ Disallow: /index.php/admin/
 Disallow: /index.php/comment/reply/
 Disallow: /index.php/filter/tips
 Disallow: /index.php/node/add/
+Disallow: /index.php/search
+Disallow: /index.php/advanced-search
+Disallow: /index.php/cs/search
+Disallow: /index.php/cs/advanced-search
+Disallow: /index.php/en/search
+Disallow: /index.php/en/advanced-search
+Disallow: /index.php/fr/search
+Disallow: /index.php/fr/advanced-search
 Disallow: /index.php/search/
 Disallow: /index.php/user/password
 Disallow: /index.php/user/register
