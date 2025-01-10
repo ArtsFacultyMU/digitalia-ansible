@@ -11,11 +11,11 @@ filmovebrno-devel.phil.muni.cz
 herbaria.phil.muni.cz production='y' backup="y"
 herbaria-devel.phil.muni.cz
 islandora-sandbox-bea.phil.muni.cz
-islandora-test.phil.muni.cz
+#islandora-test.phil.muni.cz
 projectiles.phil.muni.cz production="y" backup="y"
 rapcor.phil.muni.cz production="y"
 rapcor-devel.phil.muni.cz
-scf-devel.phil.muni.cz
+#scf-devel.phil.muni.cz
 tkaniny-devel.phil.muni.cz
 www.beauty-patterns.org production="y" backup="y" 
 
