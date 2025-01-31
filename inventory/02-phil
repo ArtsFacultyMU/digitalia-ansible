@@ -2,8 +2,8 @@
 archaeo3data.phil.muni.cz production="y" backup="y"
 archaeo3data-devel.phil.muni.cz 
 cinematicbrno.phil.muni.cz production="y" backup="y"
-dan-demo.phil.muni.cz production="y" backup="y" # arnenovak.phil.muni.cz
-dan-devel.phil.muni.cz
+arnenovak.phil.muni.cz production="y" backup="y" 
+arnenovak-devel.phil.muni.cz
 dan-devel2.phil.muni.cz # projectiles-devel.phil.muni.cz
 digilib.phil.muni.cz production="y" backup="y"
 digilib-devel.phil.muni.cz
