@@ -1,0 +1,35 @@
+#
+# Local changes of Fail2Ban configuration file.
+#
+
+[DEFAULT]
+
+# E-mail name and From and To addresses used for notifications.
+sendername  = Fail2Ban
+senderemail = fail2ban@{{ inventory_hostname }}
+destemail   = root@localhost
+
+#bantime
+#bantime.increment = true
+#bantime.factor = 1
+#bantime.formula = ban.Time * (1<<(ban.Count if ban.Count<20 else 20)) * banFactor
+
+ignoreip = 127.0.0.1 147.251.0.0/16 100.64.0.0/10
+usedns = no
+
+[apache-nohome]
+enabled = true
+
+[php-url-fopen]
+enabled = true
+logpath = %(apache_access_log)s
+
+[apache-search]
+enabled  = true
+port     = http,https
+filter   = apache-search
+logpath  = /var/log/apache2/{{ islandora_apache_log }}
+maxretry = 35
+findtime = 300
+bantime = 2m
+bantime.increment = true

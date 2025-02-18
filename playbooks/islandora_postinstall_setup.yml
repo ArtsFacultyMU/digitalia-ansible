@@ -7,6 +7,7 @@
     - islandora_environment
     - islandora_git
     - islandora_apache
+    - { role: islandora_fail2ban, when: production is defined and production | bool }
 
   tasks:
     - name: Remove islandora user privileges

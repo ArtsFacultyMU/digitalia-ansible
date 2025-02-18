@@ -1,0 +1,21 @@
+# Fail2Ban filter to scan Apache access.log for DoS attacks
+
+[INCLUDES]
+before = common.conf
+
+[Definition]
+# Option:  failregex
+# Notes.:  regex to match GET all requests in the logfile.
+#          The host must be matched by a group named "host". The tag "<HOST>" 
+#          can be used for standard IP/hostname matching and is only an alias for
+#          (?:::f{4,6}:)?(?P<host>[\w\-.^_]+)
+# Values:  TEXT
+failregex = ^<HOST>\s-\s-\s\[\]\s"(GET|POST)(\s)(/index.php)?(/en|/cs|/fr)?/(advanced-)?search\?.*$
+
+# Option:  ignoreregex
+# Notes.:  regex to ignore. If this regex matches, the line is ignored.
+# Values:  TEXT
+#
+ignoreregex = search_api_autocomplete
+
+datepattern = ^[^\[]*\[(%%d/%%b/%%Y:%%H:%%M:%%S %%z)\]

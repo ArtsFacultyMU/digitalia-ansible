@@ -1,0 +1,35 @@
+---
+
+- name: Install fail2ban
+  ansible.builtin.apt:
+    name: "fail2ban"
+    state: present
+  register: f2b_install_result
+  tags: 
+    - fail2ban
+
+- name: Copy global rules
+  ansible.builtin.template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  register: f2b_config_copied
+  notify:
+    - Restart fail2ban
+  tags: 
+    - fail2ban
+
+- name: Copy apache search filter
+  ansible.builtin.template:
+    src: apache-search.local.j2
+    dest: /etc/fail2ban/filter.d/apache-search.local
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  register: f2b_apache_filter_copied
+  notify:
+    - Restart fail2ban
+  tags: 
+    - fail2ban
