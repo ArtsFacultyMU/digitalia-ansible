@@ -1,30 +1,30 @@
 [phil_ubuntu]
-archaeo3data.phil.muni.cz production="y" backup="y"
+archaeo3data.phil.muni.cz production="true" backup="true"
 archaeo3data-devel.phil.muni.cz 
-cinematicbrno.phil.muni.cz production="y" backup="y"
-arnenovak.phil.muni.cz production="y" backup="y" 
+cinematicbrno.phil.muni.cz production="true" backup="true"
+arnenovak.phil.muni.cz production="true" backup="true" 
 arnenovak-devel.phil.muni.cz
 dan-devel2.phil.muni.cz # projectiles-devel.phil.muni.cz
-digilib.phil.muni.cz production="y" backup="y"
+digilib.phil.muni.cz production="true" backup="true"
 digilib-devel.phil.muni.cz
 filmovebrno-devel.phil.muni.cz
-herbaria.phil.muni.cz production='y' backup="y"
+herbaria.phil.muni.cz production='y' backup="true"
 herbaria-devel.phil.muni.cz
 islandora-sandbox-bea.phil.muni.cz
 #islandora-test.phil.muni.cz
-projectiles.phil.muni.cz production="y" backup="y"
-rapcor.phil.muni.cz production="y"
+projectiles.phil.muni.cz production="true" backup="true"
+rapcor.phil.muni.cz production="true"
 rapcor-devel.phil.muni.cz
 #scf-devel.phil.muni.cz
 tkaniny-devel.phil.muni.cz
-www.beauty-patterns.org production="y" backup="y" 
+www.beauty-patterns.org production="true" backup="true" 
 
 [phil_ubuntu_test]
-invenio.phil.muni.cz docker="y"
+invenio.phil.muni.cz docker="true"
 
 [phil_debian]
 handle.phil.muni.cz
-datarepo.phil.muni.cz production="y"
+datarepo.phil.muni.cz production="true"
 
 [phil_islandora:children]
 phil_ubuntu
