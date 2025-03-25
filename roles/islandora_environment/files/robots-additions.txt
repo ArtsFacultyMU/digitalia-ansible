@@ -1,0 +1,16 @@
+Disallow: /search
+Disallow: /advanced-search
+Disallow: /cs/search
+Disallow: /cs/advanced-search
+Disallow: /en/search
+Disallow: /en/advanced-search
+Disallow: /fr/search
+Disallow: /fr/advanced-search
+Disallow: /index.php/search
+Disallow: /index.php/advanced-search
+Disallow: /index.php/cs/search
+Disallow: /index.php/cs/advanced-search
+Disallow: /index.php/en/search
+Disallow: /index.php/en/advanced-search
+Disallow: /index.php/fr/search
+Disallow: /index.php/fr/advanced-search
