@@ -220,11 +220,21 @@
 
 - name: Ensure file-mapping exists in drupal-scaffold
   ansible.builtin.shell: |
+    cp {{ drupal_dir }}/composer.json {{ drupal_dir }}/composer.json-{{ ansible_date_time.iso8601 }}
     cat {{ drupal_dir }}/composer.json | jq '.extra["drupal-scaffold"] += {"file-mapping": {"[web-root]/robots.txt": {"append": "assets/robots-additions.txt"}}}' > {{ drupal_dir }}/composer.json.tmp
     mv {{ drupal_dir }}/composer.json.tmp {{ drupal_dir }}/composer.json
   args:
     executable: /bin/bash
-  become: islandora
+  become: true
+  become_user: islandora
+  tags: robots
+
+- name: Set up robots.txt ownership and rights
+  ansible.builtin.file:
+    path: "{{ drupal_dir }}/web/robots.txt"
+    owner: islandora
+    group: islandora
+    mode: '0644'
   tags: robots
 
 - name: Add MySQL binary logging off config file 
