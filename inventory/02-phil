@@ -1,12 +1,14 @@
 [phil_ubuntu]
 archaeo3data.phil.muni.cz production="true" backup="true"
 archaeo3data-devel.phil.muni.cz 
-cinematicbrno.phil.muni.cz production="true" backup="true"
 arnenovak.phil.muni.cz production="true" backup="true" 
 arnenovak-devel.phil.muni.cz
+cinematicbrno.phil.muni.cz production="true" backup="true"
 dan-devel2.phil.muni.cz # projectiles-devel.phil.muni.cz
 digilib.phil.muni.cz production="true" backup="true"
 digilib-devel.phil.muni.cz
+digiscripta.phil.muni.cz
+digiscripta-devel.phil.muni.cz
 filmovebrno-devel.phil.muni.cz
 herbaria.phil.muni.cz production="true" backup="true"
 herbaria-devel.phil.muni.cz
