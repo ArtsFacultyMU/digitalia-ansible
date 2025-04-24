@@ -1,0 +1,8 @@
+robots_extra_rules: |
+  Disallow: /graves
+  Disallow: /arrowheads
+  Disallow: /wristguards
+  Disallow: /index.php/graves
+  Disallow: /index.php/arrowheads
+  Disallow: /index.php/wristguards
+

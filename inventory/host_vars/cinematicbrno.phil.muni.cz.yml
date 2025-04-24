@@ -1,0 +1,18 @@
+robots_extra_rules: |
+  Disallow: /cinema
+  Disallow: /programme
+  Disallow: /number
+  Disallow: /film
+  Disallow: /person
+  Disallow: /organisation
+  Disallow: /quote
+  Disallow: /narrator
+  Disallow: /index.php/cinema
+  Disallow: /index.php/programme
+  Disallow: /index.php/number
+  Disallow: /index.php/film
+  Disallow: /index.php/person
+  Disallow: /index.php/organisation
+  Disallow: /index.php/quote
+  Disallow: /index.php/narrator
+

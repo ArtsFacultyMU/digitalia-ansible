@@ -204,8 +204,8 @@
   tags: robots
 
 - name: Copy robots.txt to Drupal root dir
-  ansible.builtin.copy:
-    src: robots-additions.txt
+  ansible.builtin.template:
+    src: robots-additions.txt.j2
     dest: "{{ drupal_dir }}/assets/robots-additions.txt"
     owner: islandora
     group: islandora
@@ -236,6 +236,15 @@
     group: islandora
     mode: '0644'
   tags: robots
+
+- name: Create xmlsitemap dir
+  ansible.builtin.file:
+    path: "{{ drupal_dir }}/web/sites/default/files/xmlsitemap"
+    owner: islandora
+    group: www-data
+    mode: '0775'
+    state: "directory"
+  tags: sitemap
 
 - name: Add MySQL binary logging off config file 
   ansible.builtin.copy: 

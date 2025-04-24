@@ -14,3 +14,8 @@ Disallow: /index.php/en/search
 Disallow: /index.php/en/advanced-search
 Disallow: /index.php/fr/search
 Disallow: /index.php/fr/advanced-search
+
+{% if robots_extra_rules %}
+# Server specific rules 
+{{ robots_extra_rules | indent(0) }}
+{% endif %}
