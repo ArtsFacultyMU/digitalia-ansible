@@ -1,10 +1,12 @@
 robots_extra_rules: |
-  Disallow: /graves
-  Disallow: /arrowheads
-  Disallow: /wristguards
-  Disallow: /index.php/graves
-  Disallow: /index.php/arrowheads
-  Disallow: /index.php/wristguards
+  Disallow: /interprets
+  Disallow: /albums
+  Disallow: /songs
+  Disallow: /places
+  Disallow: /index.php/interprets
+  Disallow: /index.php/albums
+  Disallow: /index.php/songs
+  Disallow: /index.php/places
 
 fail2ban_extra_filters: |
   [apache-facets]
@@ -17,4 +19,4 @@ fail2ban_extra_filters: |
   bantime = 2m
   bantime.increment = true
 
-fail2ban_failregex: "(graves|arrowheads)"
+fail2ban_failregex: "(interprets|albums|songs|places)"

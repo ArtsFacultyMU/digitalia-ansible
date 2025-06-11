@@ -1,0 +1,21 @@
+robots_extra_rules: |
+  Disallow: /cs/herbals
+  Disallow: /en/herbals
+  Disallow: /cs/titles
+  Disallow: /en/titles
+  Disallow: /cs/manuscripts
+  Disallow: /en/manuscripts
+  Disallow: /cs/medieval-medicaments
+  Disallow: /en/medieval-medicaments
+  Disallow: /cs/modern-medicines
+  Disallow: /en/modern-medicines
+  Disallow: /index.php/cs/herbals
+  Disallow: /index.php/en/herbals
+  Disallow: /index.php/cs/titles
+  Disallow: /index.php/en/titles
+  Disallow: /index.php/cs/manuscripts
+  Disallow: /index.php/en/manuscripts
+  Disallow: /index.php/cs/medieval-medicaments
+  Disallow: /index.php/en/medieval-medicaments
+  Disallow: /index.php/cs/modern-medicines
+  Disallow: /index.php/en/modern-medicines

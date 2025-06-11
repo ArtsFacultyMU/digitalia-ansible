@@ -10,7 +10,7 @@ before = common.conf
 #          can be used for standard IP/hostname matching and is only an alias for
 #          (?:::f{4,6}:)?(?P<host>[\w\-.^_]+)
 # Values:  TEXT
-failregex = ^<HOST>\s-\s-\s\[\]\s"(GET|POST)(\s)(/index.php)?(/en|/cs|/fr)?/(advanced-)?search\?.*$
+failregex = ^<HOST>\s-\s-\s\[\]\s"(GET|POST)(\s)(/index.php)?(/en|/cs|/fr)?/{{ fail2ban_failregex }}\?(?!page=\d+$).+$
 
 # Option:  ignoreregex
 # Notes.:  regex to ignore. If this regex matches, the line is ignored.

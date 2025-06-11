@@ -33,3 +33,10 @@ maxretry = 35
 findtime = 300
 bantime = 2m
 bantime.increment = true
+
+{% if fail2ban_extra_filters is defined %}
+# Server specific filters 
+{{ fail2ban_extra_filters | indent(0) }}
+{% endif %}
+
+

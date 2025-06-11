@@ -33,3 +33,17 @@
     - Restart fail2ban
   tags: 
     - fail2ban
+
+- name: Copy apache specific facets filter
+  ansible.builtin.template:
+    src: apache-facets.local.j2
+    dest: /etc/fail2ban/filter.d/apache-facets.local
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  register: f2b_apache_filter_copied
+  when: fail2ban_extra_filters is defined 
+  notify:
+    - Restart fail2ban
+  tags: 
+    - fail2ban

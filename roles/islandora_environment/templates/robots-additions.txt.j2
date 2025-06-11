@@ -19,3 +19,5 @@ Disallow: /index.php/fr/advanced-search
 # Server specific rules 
 {{ robots_extra_rules | indent(0) }}
 {% endif %}
+
+Sitemap: https://{{ inventory_hostname }}/sitemap.xml

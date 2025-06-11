@@ -246,6 +246,16 @@
     state: "directory"
   tags: sitemap
 
+- name: Run Drupal scaffold to ensure robots.txt update
+  ansible.builtin.shell: |
+    cd {{ drupal_dir }}
+    composer drupal:scaffold
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: islandora
+  tags: robots
+
 - name: Add MySQL binary logging off config file 
   ansible.builtin.copy: 
     src: disable_binary_log.cnf
