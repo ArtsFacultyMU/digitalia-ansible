@@ -1,6 +1,6 @@
 [phil_ubuntu]
-archaeo3data.phil.muni.cz production="true" backup="true"
-archaeo3data-devel.phil.muni.cz 
+archaeodata.phil.muni.cz production="true" backup="true"
+archaeodata-devel.phil.muni.cz 
 arnenovak.phil.muni.cz production="true" backup="true" 
 arnenovak-devel.phil.muni.cz
 cinematicbrno.phil.muni.cz production="true" backup="true"
