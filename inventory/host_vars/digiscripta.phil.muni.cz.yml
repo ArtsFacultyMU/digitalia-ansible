@@ -1,0 +1,26 @@
+robots_extra_rules: |
+  Disallow: /works
+  Disallow: /incipit
+  Disallow: /explicit
+  Disallow: /manuscripts
+  Disallow: /literature
+  Disallow: /institution
+  Disallow: /index.php/works
+  Disallow: /index.php/incipit
+  Disallow: /index.php/explicit
+  Disallow: /index.php/manuscripts
+  Disallow: /index.php/literature
+  Disallow: /index.php/institution
+
+fail2ban_extra_filters: |
+  [apache-facets]
+  enabled  = true
+  port     = http,https
+  filter   = apache-facets
+  logpath  = /var/log/apache2/islandora-access.log
+  maxretry = 35
+  findtime = 300
+  bantime = 2m
+  bantime.increment = true
+
+fail2ban_failregex: "(works|incipit|explicit|manuscripts|literature|institution)"
