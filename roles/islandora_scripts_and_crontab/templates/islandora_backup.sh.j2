@@ -14,6 +14,6 @@ $DRUSH_BIN --root=$DRUPAL_DIR sql:dump --extra-dump=--no-tablespaces --result-fi
 tar -cjf $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql.tar.bz2 $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql && rm -f $BACKUP_DIR/drupal-$(date '+%Y%m%d').sql
 
 
-rsync -a --delete --exclude='drupal/vendor/' $DRUPAL_DIR $BACKUP_DIR
+rsync -a --delete --exclude='drupal/vendor/' --exclude='drupal/web/migrate/' $DRUPAL_DIR $BACKUP_DIR
 
 tar --exclude-vcs-ignores --exclude='{{ drupal_dir }}/web/sites/default/files/*' --exclude='{{ drupal_dir }}/web/migrate/*' --exclude='.git' -cjf $BACKUP_DIR/www-$(date "+%Y%m%d").tar.bz2 "{{ www_dir }}"
