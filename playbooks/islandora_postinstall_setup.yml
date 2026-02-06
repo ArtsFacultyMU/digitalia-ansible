@@ -118,6 +118,25 @@
       become: yes
       become_user: islandora
       tags: modules
+
+    - name: Install 'openid_connect' module
+      community.general.composer:
+        command: require
+        arguments: 'drupal/openid_connect:^3.0@alpha'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+      register: openid_connect_block_res
+      become: yes
+      become_user: islandora
+      tags: 
+        - modules
+        - openid_connect
+
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: 
+        - modules
+        - openid_connect
     
     - name: Clear drush cache
       ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
