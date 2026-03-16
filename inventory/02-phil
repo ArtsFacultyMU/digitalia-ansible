@@ -28,6 +28,9 @@ www.beauty-patterns.org production="true" backup="true"
 [phil_ubuntu_test]
 invenio.phil.muni.cz docker="true"
 
+[phil_ubuntu_external]
+kramarske-pisne.phil.muni.cz production="true"
+
 [phil_debian]
 handle.phil.muni.cz
 datarepo.phil.muni.cz production="true"
