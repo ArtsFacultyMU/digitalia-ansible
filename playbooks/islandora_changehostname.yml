@@ -1,0 +1,82 @@
+---
+- name: Change hostname of a cloned server of Islandora
+  hosts: islandora
+
+  tasks:
+    - name: Ensure hostname parameter is provided
+      ansible.builtin.assert:
+        that:
+          - hostname is defined
+          - hostname | length > 0
+        fail_msg: "You must provide hostname via -e 'hostname=<new_hostname>'"
+
+    - name: Set system hostname
+      ansible.builtin.hostname:
+        name: "{{ hostname }}"
+    
+    - name: Replace hostname in /etc/hosts
+      ansible.builtin.replace:
+        path: /etc/hosts
+        regexp: 'corpora-devel'
+        replace: "{{ hostname }}"
+
+    - name: Ensure hostname is present in /etc/apache2/sites-available/islandora.conf
+      ansible.builtin.replace:
+        path: /etc/apache2/sites-available/islandora.conf
+        regexp: 'corpora-devel\.phil\.muni\.cz'
+        replace: "{{ hostname }}"
+    
+    - name: Ensure hostname is present in /var/www/html/drupal/web/sites/default/settings.php
+      ansible.builtin.replace:
+        path: /var/www/html/drupal/web/sites/default/settings.php
+        regexp: 'corpora-devel\.phil\.muni\.cz'
+        replace: "{{ hostname }}"
+ 
+    - name: Ensure hostname is present in /etc/postfix/main.cf
+      ansible.builtin.replace:
+        path: /etc/postfix/main.cf
+        regexp: 'corpora-devel\.phil\.muni\.cz'
+        replace: "{{ hostname }}"
+ 
+    - name: Ensure hostname is present in /etc/mailname
+      ansible.builtin.replace:
+        path: /etc/mailname
+        regexp: 'corpora-devel\.phil\.muni\.cz'
+        replace: "{{ hostname }}"
+
+    - name: Run newaliases
+      ansible.builtin.shell: newaliases
+
+    - name: Change url for SORL
+      ansible.builtin.shell: "{{ drush_bin }} config:set -y search_api.server.default_solr_server backend_config.connector_config.host '{{ hostname }}'"
+      args:
+        chdir: "{{ drupal_dir }}"
+      become: true
+      become_user: islandora
+
+
+    - name: Change url for Open Seadragon
+      ansible.builtin.shell: "{{ drush_bin }} config:set -y openseadragon.settings iiif_server 'http://{{ hostname }}:8080/cantaloupe/iiif/2'"
+      args:
+        chdir: "{{ drupal_dir }}"
+      become: true
+      become_user: islandora
+
+
+    - name: Change IIIF url
+      ansible.builtin.shell: "{{ drush_bin }} config:set -y islandora_iiif.settings iiif_server 'http://{{ hostname }}:8080/cantaloupe/iiif/2'"
+      args:
+        chdir: "{{ drupal_dir }}"
+      become: true
+      become_user: islandora
+
+
+    - name: Change ActiveMQ broker URL
+      ansible.builtin.shell: "{{ drush_bin }} config:set -y islandora.settings broker_url 'tcp://{{ hostname }}:61613'"
+      args:
+        chdir: "{{ drupal_dir }}"
+      become: true
+      become_user: islandora
+
+
+
