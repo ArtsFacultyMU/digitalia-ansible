@@ -131,13 +131,63 @@
       tags: 
         - modules
         - openid_connect
-
+     
     - name: Clear drush cache
       ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
       tags: 
         - modules
         - openid_connect
     
+    - name: Install 'redirect' module
+      community.general.composer:
+        command: require
+        arguments: 'drupal/redirect:^1.13'
+        working_dir: "{{ drupal_dir }}"
+        composer_executable: "{{ composer_bin }}"
+      register: redirect_block_res
+      become: yes
+      become_user: islandora
+      tags: 
+        - modules
+        - redirect
+        
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: 
+        - modules
+        - redirect
+ 
+    - name: Enable 'redirect' module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} en redirect"
+      when: redirect_block_res
+      ignore_errors: yes
+      become: yes
+      become_user: islandora
+      tags: 
+        - modules
+        - redirect
+
+    - name: Clear drush cache
+      ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
+      tags: 
+        - modules
+        - redirect
+
+    - name: Configure register module
+      ansible.builtin.shell:
+        chdir: "{{ drupal_dir }}"
+        cmd: "{{ drush_bin}} -y config:set redirect.settings route_normalizer_enabled 1"
+      when: redirect_block_res
+      become: yes
+      become_user: islandora
+      tags: 
+        - modules
+        - redirect
+
+
+
     - name: Clear drush cache
       ansible.builtin.include_tasks: "tasks/islandora_drush_cr.yml"
       tags: 
