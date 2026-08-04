@@ -93,7 +93,7 @@
     user: root
     name: "islandora_service_watch"
     job: "{{ root_bin_dir }}/watch.sh"
-  when: copy_watch_script_res and production is defined
+  when: not copy_watch_script_res.failed and production is defined
   tags: crontab
 
 - name: Copy root bin scripts
@@ -186,7 +186,7 @@
   tags: 
     - scripts
     - crontab
- 
+
 - name: Update cron to run islandora_security_checks.sh script
   ansible.builtin.cron:
     minute: "0"
@@ -195,7 +195,7 @@
     name: "security_checks"
     job: "{{ islandora_bin_dir }}/islandora_security_checks.sh"
     state: absent
-  when: islandora_security_checks_script_res
+  when: islandora_security_checks_script_res.stat.exists
   become: yes
   become_user: islandora
   tags: 

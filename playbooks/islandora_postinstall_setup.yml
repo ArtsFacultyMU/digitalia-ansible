@@ -36,7 +36,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en simple_block"
-      when: simple_block_res
+      when: not simple_block_res.failed
       ignore_errors: yes
       become: yes
       become_user: islandora
@@ -48,7 +48,7 @@
         arguments: 'drupal/security_review'
         working_dir: "{{ drupal_dir }}"
         composer_executable: "{{ composer_bin }}"
-      register: security_review_res
+      register: security_review_res 
       become: yes
       become_user: islandora
       tags: modules
@@ -61,7 +61,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en security_review"
-      when: security_review_res
+      when: not security_review_res.failed
       ignore_errors: yes
       become: yes
       become_user: islandora
@@ -86,7 +86,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en flood_control"
-      when: flood_control_res
+      when: not flood_control_res.failed
       ignore_errors: yes
       become: yes
       become_user: islandora
@@ -96,7 +96,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} -y cset user.flood ip_limit 3"
-      when: flood_control_res
+      when: not flood_control_res.failed
       become: yes
       become_user: islandora
       tags: modules
@@ -105,7 +105,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} -y cset user.flood user_limit 3"
-      when: flood_control_res
+      when: not flood_control_res.failed
       become: yes
       become_user: islandora
       tags: modules
@@ -114,7 +114,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} -y cset user.settings register admin_only"
-      when: flood_control_res
+      when: not flood_control_res.failed
       become: yes
       become_user: islandora
       tags: modules
@@ -161,7 +161,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} en redirect"
-      when: redirect_block_res
+      when: not redirect_block_res.failed
       ignore_errors: yes
       become: yes
       become_user: islandora
@@ -179,7 +179,7 @@
       ansible.builtin.shell:
         chdir: "{{ drupal_dir }}"
         cmd: "{{ drush_bin}} -y config:set redirect.settings route_normalizer_enabled 1"
-      when: redirect_block_res
+      when: not redirect_block_res.failed
       become: yes
       become_user: islandora
       tags: 
