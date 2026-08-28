@@ -34,7 +34,7 @@ echo "<div style='font-style: italic'>" >> $lastlogfile
 echo "[server name] [no_of_sec_issues] ([packges_affected])" | tee -a $lastlogfile
 echo "</div>" >> $lastlogfile
 
-ansible islandora --list-hosts | grep -v -e 'hosts' | sed 's/[ ]*//' | while read line 
+ANSIBLE_VAULT_PASSWORD_FILE='./bin/dummy_vault_password.txt' ansible islandora --list-hosts | grep -v -e 'hosts' | sed 's/[ ]*//' | while read line 
 do
 	#echo $line | grep -q 'phil_ubuntu_test'
 	#if [ $? -eq 0 ]; then break; fi
