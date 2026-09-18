@@ -1,0 +1,30 @@
+diff --git a/src/MetatagToken.php b/src/MetatagToken.php
+index eb7cdf1..caa946f 100644
+--- a/src/MetatagToken.php
++++ b/src/MetatagToken.php
+@@ -69,6 +69,26 @@ class MetatagToken {
+     // values.
+     $replaced = preg_replace('/(?<!:)(?<!)\/+\//', '/', $replaced);
+ 
++    // begin: islandora-muni:
++    // comma hack for the authors
++    if (str_contains($string, 'field_author')) {
++        $toreplaces = explode('^', $replaced);
++        $output = [];
++        foreach($toreplaces as $toreplace) {
++                if (trim($toreplace) != '') {
++                        $output[] = preg_replace('/(.+?),(.+?),/', '$1,$2^', $toreplace);
++                }
++        }
++
++        $replaced = implode('^', $output);
++    }
++    else {
++        if (str_contains($string, 'field_keywords')) {
++                $replaced = str_replace(',', '^', $replaced);
++        }
++    }
++    // end: islandora-muni
++
+     return $replaced;
+   }

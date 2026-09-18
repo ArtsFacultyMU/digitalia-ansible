@@ -1,0 +1,19 @@
+diff --git a/src/Plugin/metatag/Tag/MetaNameBase.php b/src/Plugin/metatag/Tag/MetaNameBase.php
+index b81386d..061f421 100644
+--- a/src/Plugin/metatag/Tag/MetaNameBase.php
++++ b/src/Plugin/metatag/Tag/MetaNameBase.php
+@@ -521,7 +521,13 @@ abstract class MetaNameBase extends PluginBase {//implements ContainerFactoryPlu
+       $value = PlainTextOutput::renderFromHtml($this->value);
+     }
+ 
+-    $values = $this->multiple() ? explode($separator, $value) : [$value];
++    // islandora-muni
++    //$values = $this->multiple() ? explode(',', $value) : [$value];
++    //$values = $this->multiple() ? explode($separator, $value) : [$value];
++    $this->multiple = true;
++    $values = explode('^', $value);
++    // islandora-muni end
++
+     $elements = [];
+     foreach ($values as $value) {
+       $value = $this->tidy($value);

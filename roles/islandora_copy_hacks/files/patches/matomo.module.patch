@@ -1,0 +1,31 @@
+diff --git a/matomo.module b/matomo.module
+index c4590d8..f3a076d 100644
+--- a/matomo.module
++++ b/matomo.module
+@@ -361,10 +361,26 @@ function matomo_page_attachments(array &$page) {
+     $script .= 's.parentNode.insertBefore(g,s);';
+     $script .= '})();';
+ 
++    // begin: digitalia_muni tracking cookies patch
++    $page['#attached']['html_head'][] = [
++      [
++        '#tag' => 'script',
++        '#value' => 'window._paq = window._paq || [];',
++      ],
++      'matomo_paq_init',
++    ];
++    // end: digitalia_muni tracking cookies patch
++
+     // Add tracker code.
+     $page['#attached']['html_head'][] = [
+       [
+         '#tag' => 'script',
++        // begin: digitalia_muni tracking cookies patch
++        '#attributes' => [
++           'class' => ['mc-analytics'],
++           'type' => ['text/plain'],
++        ],
++        // end: digitalia_muni tracking cookies patch
+         '#value' => new MatomoJavaScriptSnippet($script),
+       ],
+       'matomo_tracking_script',

@@ -1,20 +1,53 @@
 ---
-- name: Islandora copy OAI hacks
+- name: Install jq (neccessary for changing composer.js)
+  ansible.builtin.apt:
+    package: jq
+    state: present
+
+- name: Islandora copy Metatag patches/hacks
   ansible.builtin.copy:
-    src: "{{ item.path }}/{{ item.file }}"
-    dest: "{{ islandora_drupal_root }}/{{ item.path }}//{{ item. file }}"
+    src: "patches/{{ item }}"
+    dest: "{{ islandora_drupal_root }}/patches/"
     mode: "{{ islandora_hacks_mode }}"
     owner: "{{ islandora_user }}"
     group: "{{ islandora_group }}"
-  loop: 
-    - path: "web/modules/contrib/metatag/src"
-      file: "MetatagToken.php" 
-    - path: "web/modules/contrib/metatag/src/Plugin/metatag/Tag"
-      file: "MetaNameBase.php"
+  loop:
+    - MetatagToken.patch
+    - MetaNameBase.patch
   tags: oai_hacks
 
-    #- name: Debug test
-    #ansible.builtin.debug: 
-    #msg: "test" 
-    #tags: debug
+- name: Ensure Metatag  patch exists in drupal-patches composer.json
+  ansible.builtin.shell: |
+    cp {{ drupal_dir }}/composer.json {{ drupal_dir }}/composer.json-{{ ansible_date_time.iso8601 }}
+    cat {{ drupal_dir }}/composer.json | jq '.extra.patches["drupal/metatag"] = ((.extra.patches["drupal/metatag"] // {}) + {"MetatagToken": "./patches/MetatagToken.patch"} + {"MetaNameBase": "./patches/MetaNameBase.patch"})' > {{ drupal_dir }}/composer.json.tmp
+    mv {{ drupal_dir }}/composer.json.tmp {{ drupal_dir }}/composer.json
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: islandora
+  tags: oai_hacks
+
+- name: Islandora copy Matomo patch/hack
+  ansible.builtin.copy:
+    src: "patches/matomo.module.patch"
+    dest: "{{ islandora_drupal_root }}/patches/"
+    mode: "{{ islandora_hacks_mode }}"
+    owner: "{{ islandora_user }}"
+    group: "{{ islandora_group }}"
+  when: matomo | default(false) | bool
+  tags: matomo_hack
+
+
+- name: Ensure Matomo patch exists in drupal-patches composer.json
+  ansible.builtin.shell: |
+    cp {{ drupal_dir }}/composer.json {{ drupal_dir }}/composer.json-{{ ansible_date_time.iso8601 }}
+    cat {{ drupal_dir }}/composer.json | jq '.extra.patches["drupal/matomo"] = ((.extra.patches["drupal/matomo"] // {}) + {"Add compatibility with MUNI cookies complain solution": "./patches/matomo.module.patch"})' > {{ drupal_dir }}/composer.json.tmp
+    mv {{ drupal_dir }}/composer.json.tmp {{ drupal_dir }}/composer.json
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: islandora
+  when: matomo | default(false) | bool
+  tags: matomo_hack
+
 
